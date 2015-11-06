@@ -40,6 +40,6 @@ public class MainFragment extends CVMFSFragment implements SplashFragment.Splash
 
     @Override
     public void splashLoaded() {
-        replaceFragment(new SplashFragment(), R.id.main_container_frame);
+        replaceFragment(new RepositorySelectionFragment(), R.id.main_container_frame);
     }
 }
