@@ -3,4 +3,6 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="backgroundCERN">#295EA5</color>
+    <color name="ui_white">#FFFFFF</color>
 </resources>
