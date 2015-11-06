@@ -2,6 +2,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/cern_white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:background="@color/backgroundCERN"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <EditText
+                android:id="@+id/repo_selection_fqrn_edittext"
+                style="@style/white_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:gravity="center"
+                android:hint="@string/repo_selection_fqrn_edittext" />
+
+            <Button
+                android:layout_marginTop="30dp"
+                style="@style/RepoSelectionEnterButton"
+                android:textColor="@color/backgroundCERN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/repo_selection_enter_button" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
 

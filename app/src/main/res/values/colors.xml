@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="backgroundCERN">#295EA5</color>
+    <color name="soft_blue">#acc3df</color>
     <color name="ui_white">#FFFFFF</color>
+    <color name="MenuText">#FFFFFFF</color>
 </resources>

@@ -3,7 +3,7 @@ package ch.cern.cvmfs.activities;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import ch.cern.cvmfs.cvmfs.R;
+import ch.cern.cvmfs.R;
 import ch.cern.cvmfs.fragments.CVMFSFragment;
 import ch.cern.cvmfs.fragments.MainFragment;
 

@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.cern.cvmfs.cvmfs.R;
+import ch.cern.cvmfs.R;
 
 public class RepositorySelectionFragment extends CVMFSFragment {
 

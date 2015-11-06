@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CernVM-FS</string>
+    <string name="repo_selection_fqrn_edittext">Fully qualified repository name</string>
+    <string name="repo_selection_enter_button">Enter</string>
 </resources>

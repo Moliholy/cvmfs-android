@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ch.cern.cvmfs.cvmfs.R;
+import ch.cern.cvmfs.R;
 
 public class SplashFragment extends CVMFSFragment {
 
@@ -27,7 +27,6 @@ public class SplashFragment extends CVMFSFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash, container, false);
     }
 
