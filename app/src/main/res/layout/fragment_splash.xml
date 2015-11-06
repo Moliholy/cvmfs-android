@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="File System"
-                android:textSize="36dp" />
+                android:textSize="37dp" />
         </LinearLayout>
 
     </LinearLayout>

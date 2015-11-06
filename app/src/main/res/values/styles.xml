@@ -1,11 +1,11 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
 
     <style name="white_text">
         <item name="android:textColorHint">#A8FFFFFF</item>
         <item name="android:textColor">#FFFFFFFF</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="MenuText">
