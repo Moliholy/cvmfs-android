@@ -7,7 +7,7 @@ import android.view.View;
 
 public class CVMFSFragment extends Fragment {
 
-    public boolean backPressed() {
+    public boolean onBackPressed() {
         return false;
     }
 
@@ -19,10 +19,19 @@ public class CVMFSFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        OnPrepareInterface();
+        onPrepareInterface();
     }
 
-    protected void OnPrepareInterface() {
+    protected CVMFSFragment getCurrentFragment(int containerId) {
+        try {
+            return (CVMFSFragment) getChildFragmentManager().findFragmentById(containerId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    protected void onPrepareInterface() {
 
     }
 }
