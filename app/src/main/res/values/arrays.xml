@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="repo_list">
+        <item>ATLAS;atlas.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/atlas</item>
+        <item>LHCb;lhcb.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/lhcb</item>
+        <item>ALICE;alice.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/alice</item>
+        <item>Geant4;geant4.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/geant4</item>
+        <item>MICE;mice.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/mice.egi.eu</item>
+        <item>NA62;na62.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/na62.egi.eu</item>
+        <item>WENMR;wenmr.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/wenmr.egi.eu</item>
+        <item>Physics IBERGRID;phys-ibergrid.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/phys-ibergrid.egi.eu</item>
+        <item>AMS;ams.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/ams</item>
+        <item>Belle;belle.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/belle</item>
+        <item>Boss;boss.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/boss</item>
+        <item>Grid;grid.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/grid</item>
+        <item>NA61;na61.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/na61</item>
+        <item>SFT;sft.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/sft</item>
+        <item>ATLAS conditions data;atlas-condb.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/atlas-condb</item>
+        <item>ATLAS nightlies;atlas-nightlies.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/atlas-nightlies</item>
+        <item>ILC;ilc.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/ilc.desy.de</item>
+        <item>Blue Brain Project;bbp.epfl.ch;http://cvmfs-stratum-one.cern.ch/opt/bbp</item>
+        <item>CernVM 3;cernvm-prod.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/cernvm-prod</item>
+        <item>Biomed;biomed.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/biomed</item>
+        <item>T2K;t2k.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/t2k.egi.eu</item>
+        <item>ALICE Conditions;alice-ocdb.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/alice-ocdb</item>
+        <item>CALICE;calice.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/calice.desy.de</item>
+        <item>HERMES;hermes.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/hermes.desy.de</item>
+        <item>H1;hone.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/hone.desy.de</item>
+        <item>OLYMPUS;olympus.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/olympus.desy.de</item>
+        <item>XFEL;xfel.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/xfel.desy.de</item>
+        <item>ZEUS;zeus.desy.de;http://grid-cvmfs-one.desy.de:8000/cvmfs/zeus.desy.de</item>
+        <item>VLEMED;vlemed.amc.nl;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/vlemed.amc.nl</item>
+        <item>ALEPH;aleph.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/aleph</item>
+        <item>CvmFS Configuration;cvmfs-config.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/cvmfs-config</item>
+        <item>CERN@School;cernatschool.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/cernatschool.egi.eu</item>
+        <item>GLAST;glast.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/glast.egi.eu</item>
+        <item>HyperK;hyperk.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/hyperk.egi.eu</item>
+        <item>SNO+;snoplus.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/snoplus.egi.eu</item>
+        <item>PHENO;pheno.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/pheno.egi.eu</item>
+        <item>LHCb Nightlies;lhcbdev.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/lhcbdev</item>
+        <item>OASIS;oasis.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/oasis.opensciencegrid.org</item>
+        <item>IceCube;icecube.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/icecube.opensciencegrid.org</item>
+        <item>Future Circular Collider;fcc.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/fcc</item>
+        <item>AUGER;auger.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/auger.egi.eu</item>
+        <item>KM3Net;km3net.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/km3net.egi.eu</item>
+        <item>Ganga Grid Client;ganga.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/ganga</item>
+        <item>Darkside;darkside.opensciencegrid.org;/http://grid-cvmfs-one.desy.de:8000/cvmfs/darkside.opensciencegrid.org</item>
+        <item>Dark Energy Survey;des.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/des.opensciencegrid.org</item>
+        <item>Fermilab;fermilab.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/fermilab.opensciencegrid.org</item>
+        <item>Muon g-2 Experiment;gm2.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/gm2.opensciencegrid.org</item>
+        <item>LArIAT;lariat.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/lariat.opensciencegrid.org</item>
+        <item>Large Synoptic Survey Telescope;lsst.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/lsst.opensciencegrid.org</item>
+        <item>MINOS Experiment;minos.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/minos.opensciencegrid.org</item>
+        <item>Mu2e;mu2e.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/mu2e.opensciencegrid.org</item>
+        <item>NOvA Neutrino Experiment;nova.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/nova.opensciencegrid.org</item>
+        <item>SeaQuest;seaquest.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/seaquest.opensciencegrid.org</item>
+        <item>US ATLAS T3;usatlast3.opensciencegrid.org;http://cvmfs.fnal.gov/cvmfs/usatlast3.opensciencegrid.org</item>
+        <item>MoEDAL;moedal.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/</item>
+        <item>CMS Nightlies;cms-ib.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/</item>
+        <item>OPAL;opal.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/opal</item>
+        <item>TEST;test.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/test</item>
+        <item>NA49;na49.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/na49</item>
+        <item>Pravda;pravda.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/pravda.egi.eu</item>
+        <item>GHOST;ghost.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/ghost.egi.eu</item>
+    </string-array>
+</resources>
