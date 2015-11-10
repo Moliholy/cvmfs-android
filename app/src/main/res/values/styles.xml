@@ -14,7 +14,16 @@
     </style>
 
     <style name="RepoSelectionEnterButton">
-        <item name="android:background">@color/ui_white</item>
+        <item name="android:background">@drawable/selectable_enter_button</item>
+    </style>
+
+    <style name="DrawerNavigationOption" parent="DrawerGeneric">
+        <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="DrawerGeneric">
+        <item name="android:textColor">@color/ui_darklabel</item>
+        <item name="android:textSize">11dp</item>
     </style>
 
 </resources>

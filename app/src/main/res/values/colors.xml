@@ -7,4 +7,14 @@
     <color name="soft_blue">#acc3df</color>
     <color name="ui_white">#FFFFFF</color>
     <color name="MenuText">#FFFFFF</color>
+    <color name="ui_grey">#D8D8D8</color>
+    <color name="ui_darklabel">#333333</color>
+    <color name="ui_graydivider">#E8E8E9</color>
+    <color name="ui_rojosan">#EC0000</color>
+    <color name="ui_black">#000000</color>
+    <color name="ui_red">#FF0000</color>
+    <color name="ui_red_light">#EC0000</color>
+    <color name="ui_translucent">#b4000000</color>
+    <color name="DrawerItemBackground">#FFFFFFFF</color>
+    <color name="DrawerNavigationBackground">#FFFFFFFF</color>
 </resources>

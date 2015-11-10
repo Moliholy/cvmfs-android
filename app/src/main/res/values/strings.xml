@@ -2,6 +2,13 @@
     <string name="app_name">CernVM-FS</string>
     <string name="repo_selection_fqrn_textview">Fully qualified repository name</string>
     <string name="repo_selection_enter_button">Enter</string>
+    <string name="drawer_opened">Drawer opened</string>
+    <string name="drawer_closed">Drawer closed</string>
+    <string name="DrawerExit">EXIT</string>
+    <string name="drawer_root_folder">ROOT FOLDER</string>
+    <string name="drawer_add_repository">ADD REPOSITORY</string>
+    <string name="drawer_list_tags">TAGS</string>
+    <string name="drawer_select_date">SELECT DATE</string>
 
 
     <string-array name="repo_list">
