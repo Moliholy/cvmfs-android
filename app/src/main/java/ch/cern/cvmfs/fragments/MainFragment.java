@@ -12,9 +12,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ch.cern.cvmfs.R;
+import ch.cern.cvmfs.model.RepositoryDescription;
 
 
-public class MainFragment extends CVMFSFragment implements SplashFragment.SplashListener {
+public class MainFragment extends CVMFSFragment
+		implements SplashFragment.SplashListener, DrawerFragment.DrawerListener,
+		RepositorySelectionFragment.RepositorySelectionListener {
 
     private Toolbar toolbar;
 	private View mView;
@@ -99,4 +102,14 @@ public class MainFragment extends CVMFSFragment implements SplashFragment.Splash
     public void splashLoaded() {
         loadRepositorySelection();
     }
+
+	@Override
+	public void drawerHomeSelected() {
+
+	}
+
+	@Override
+	public void repositoryChosen(RepositoryDescription chosen) {
+
+	}
 }
