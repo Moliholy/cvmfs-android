@@ -41,7 +41,8 @@ public class RepositorySelectionFragment extends CVMFSFragment {
 		try {
 			mCallback = (RepositorySelectionListener) getParentFragment();
 		} catch (ClassCastException e) {
-			throw new RuntimeException(getParentFragment() + " must implement DrawerListener!");
+			throw new RuntimeException(getParentFragment() + " must implement " +
+					RepositorySelectionListener.class.getName());
 		}
 		super.onAttach(activity);
 	}
