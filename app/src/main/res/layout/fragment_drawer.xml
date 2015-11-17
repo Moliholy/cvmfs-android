@@ -26,9 +26,9 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_marginTop="15dp"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_marginTop="15dp"
                     android:src="@drawable/cern_logo"/>
 
                 <TextView
@@ -38,9 +38,9 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="12dp"
                     android:gravity="center"
-                    android:textSize="20dp"
                     android:paddingTop="10dp"
-                    android:textColor="@color/ui_white"/>
+                    android:textColor="@color/ui_white"
+                    android:textSize="20dp"/>
 
             </LinearLayout>
 

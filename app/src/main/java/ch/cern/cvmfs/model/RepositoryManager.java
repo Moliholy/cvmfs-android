@@ -16,12 +16,16 @@ import ch.cern.cvmfs.R;
 
 public class RepositoryManager extends Thread {
 
-	private static RepositoryManager INSTANCE;
 	private static final Object LOCK = new Object();
-
+	private static RepositoryManager INSTANCE;
 	private Repository currentRepository;
 	private Queue<Runnable> tasks;
 	private boolean closed;
+
+	private RepositoryManager() {
+		closed = false;
+		tasks = new ArrayDeque<>();
+	}
 
 	public synchronized static RepositoryManager getInstance() {
 		if (INSTANCE == null) {
@@ -29,6 +33,17 @@ public class RepositoryManager extends Thread {
 			INSTANCE.start();
 		}
 		return INSTANCE;
+	}
+
+	public static RepositoryDescription[] getRepositoryList(Context context) {
+		String[] unformattedList = context.getResources().getStringArray(R.array.repo_list);
+		RepositoryDescription[] repos = new RepositoryDescription[unformattedList.length];
+		int i = 0;
+		for (String repo : unformattedList) {
+			String[] parts = repo.split(";");
+			repos[i++] = new RepositoryDescription(parts[0], parts[1], parts[2]);
+		}
+		return repos;
 	}
 
 	@Override
@@ -87,21 +102,5 @@ public class RepositoryManager extends Thread {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static RepositoryDescription[] getRepositoryList(Context context) {
-		String[] unformattedList = context.getResources().getStringArray(R.array.repo_list);
-		RepositoryDescription[] repos = new RepositoryDescription[unformattedList.length];
-		int i = 0;
-		for (String repo : unformattedList) {
-			String[] parts = repo.split(";");
-			repos[i++] = new RepositoryDescription(parts[0], parts[1], parts[2]);
-		}
-		return repos;
-	}
-
-	private RepositoryManager() {
-		closed = false;
-		tasks = new ArrayDeque<>();
 	}
 }

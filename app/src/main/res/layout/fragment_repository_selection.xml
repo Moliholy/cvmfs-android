@@ -9,11 +9,11 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_marginTop="40dp"
-            android:layout_marginBottom="20dp"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="40dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
@@ -59,9 +59,9 @@
                 android:layout_marginBottom="65dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:visibility="invisible"
                 android:text="@string/repo_selection_fqrn_textview"
-                android:textSize="14dp"/>
+                android:textSize="14dp"
+                android:visibility="invisible"/>
 
             <Spinner
                 android:id="@+id/repo_selection_fqrn_spinner"

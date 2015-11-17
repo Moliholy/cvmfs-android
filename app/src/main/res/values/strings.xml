@@ -10,7 +10,7 @@
     <string name="drawer_list_tags">TAGS</string>
     <string name="drawer_select_date">SELECT DATE</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="toast_repository_not_loadable">Couldn\'t load the repository</string>
     <string name="toast_repository_not_selected">You have not selected a repository yet</string>

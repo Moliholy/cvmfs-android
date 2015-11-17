@@ -29,6 +29,7 @@ public class MainFragment extends CVMFSFragment
 		implements SplashFragment.SplashListener, DrawerFragment.DrawerListener,
 		RepositorySelectionFragment.RepositorySelectionListener, BrowserFragment.BrowserFragmentListener {
 
+	private static final int MAX_PATH_LENGTH = 25;
 	private Toolbar toolbar;
 	private View mView;
 	private TextView menuTitleTextView;
@@ -38,8 +39,6 @@ public class MainFragment extends CVMFSFragment
 	private ImageView menuLogoImageView;
 	private View mRightDrawerView;
 	private ProgressDialog progressDialog;
-
-	private static final int MAX_PATH_LENGTH = 25;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,7 +126,7 @@ public class MainFragment extends CVMFSFragment
 
 	private void loadRepositoryView(RepositoryDescription chosen) {
 		// find the drawer fragment first
-		RepositoryStatusListener rsl = (RepositoryStatusListener)getCurrentFragment(R.id.loggedin_main_right_frame);
+		RepositoryStatusListener rsl = (RepositoryStatusListener) getCurrentFragment(R.id.loggedin_main_right_frame);
 		rsl.repositoryChanged(chosen);
 		new LoadNewRepository(chosen.getUrl()).execute();
 	}
