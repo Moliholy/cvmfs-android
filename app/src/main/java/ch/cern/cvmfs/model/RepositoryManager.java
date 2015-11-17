@@ -2,7 +2,6 @@ package ch.cern.cvmfs.model;
 
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.repository.exception.CacheDirectoryNotFound;
@@ -10,24 +9,85 @@ import com.molina.cvmfs.repository.exception.FailedToLoadSourceException;
 import com.molina.cvmfs.rootfile.exception.RootFileException;
 
 import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Queue;
 
 import ch.cern.cvmfs.R;
 
-public class RepositoryManager {
+public class RepositoryManager extends Thread {
 
-	public static final String CACHE_PATH =
-			Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/cvmfs_cache";
+	private static RepositoryManager INSTANCE;
+	private static final Object LOCK = new Object();
 
 	private Repository currentRepository;
+	private Queue<Runnable> tasks;
+	private boolean closed;
 
-	public synchronized void setRepositoryInstance(String url) throws RootFileException, CacheDirectoryNotFound, FailedToLoadSourceException, IOException {
-		currentRepository = new Repository(url, CACHE_PATH);
+	public synchronized static RepositoryManager getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new RepositoryManager();
+			INSTANCE.start();
+		}
+		return INSTANCE;
+	}
+
+	@Override
+	public void run() {
+		while (!closed) {
+			while (tasks.isEmpty()) {
+				synchronized (INSTANCE) {
+					try {
+						INSTANCE.wait();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			Runnable task = tasks.poll();
+			task.run();
+			synchronized (LOCK) {
+				LOCK.notify();
+			}
+		}
+	}
+
+	public synchronized void close() {
+		closed = true;
+		INSTANCE.notify();
+	}
+
+	public Repository setRepositoryInstance(final String url, final String cacheDirectory) {
+		tasks.clear();
+		addTask(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					currentRepository = new Repository(url, cacheDirectory);
+				} catch (FailedToLoadSourceException | IOException | RootFileException | CacheDirectoryNotFound e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		return currentRepository;
 	}
 
 	public synchronized Repository getRepositoryInstance() {
 		return currentRepository;
 	}
 
+	public void addTask(Runnable newTask) {
+		synchronized (INSTANCE) {
+			tasks.add(newTask);
+			INSTANCE.notify();
+		}
+		synchronized (LOCK) {
+			try {
+				LOCK.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static RepositoryDescription[] getRepositoryList(Context context) {
 		String[] unformattedList = context.getResources().getStringArray(R.array.repo_list);
@@ -41,6 +101,7 @@ public class RepositoryManager {
 	}
 
 	private RepositoryManager() {
-
+		closed = false;
+		tasks = new ArrayDeque<>();
 	}
 }
