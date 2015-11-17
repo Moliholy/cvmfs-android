@@ -7,20 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import ch.cern.cvmfs.R;
+import ch.cern.cvmfs.listeners.RepositoryStatusListener;
+import ch.cern.cvmfs.model.RepositoryDescription;
 
-public class DrawerFragment extends CVMFSFragment {
+public class DrawerFragment extends CVMFSFragment implements RepositoryStatusListener {
 
 	private View mView;
 	private LinearLayout rootLayout;
 	private DrawerListener mCallback;
+	private TextView drawerFQRNTextview;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		mView = inflater.inflate(R.layout.fragment_drawer, container, false);
-		return mView;
+		return mView = inflater.inflate(R.layout.fragment_drawer, container, false);
 	}
 
 	@Override
@@ -41,6 +44,12 @@ public class DrawerFragment extends CVMFSFragment {
 				mCallback.drawerHomeSelected();
 			}
 		});
+		drawerFQRNTextview = (TextView) mView.findViewById(R.id.drawer_fqrn_textview);
+	}
+
+	@Override
+	public void repositoryChanged(RepositoryDescription repo) {
+		drawerFQRNTextview.setText(repo.getFqrn());
 	}
 
 	public interface DrawerListener {

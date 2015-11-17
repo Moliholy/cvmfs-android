@@ -26,19 +26,20 @@
                 android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="15dp"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:src="@drawable/cern_logo"/>
 
                 <TextView
+                    android:id="@+id/drawer_fqrn_textview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="12dp"
                     android:gravity="center"
-                    android:paddingBottom="15dp"
+                    android:textSize="20dp"
                     android:paddingTop="10dp"
-                    android:text="FQRN"
                     android:textColor="@color/ui_white"/>
 
             </LinearLayout>
