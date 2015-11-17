@@ -1,5 +1,6 @@
 package ch.cern.cvmfs.activities;
 
+import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,11 +17,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-	    File mainStorageDirectory = new File(RepositoryManager.CACHE_PATH);
+        ContextWrapper cw = new ContextWrapper(this);
+	    File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
 	    if (!mainStorageDirectory.exists()) {
 		    boolean result = mainStorageDirectory.mkdirs();
 		    if (!result) {
-			    Log.e("FileStorage", "Couldn't create the directory \'" + RepositoryManager.CACHE_PATH + "\'");
+			    Log.e("FileStorage", "Couldn't create the directory \'" +
+					    mainStorageDirectory.getAbsolutePath() + "\'");
 		    }
 	    }
         setContentView(R.layout.activity_main);
@@ -46,5 +49,11 @@ public class MainActivity extends ActionBarActivity {
 
     protected CVMFSFragment getCurrentFragment(int idContainer) {
         return (CVMFSFragment) getSupportFragmentManager().findFragmentById(idContainer);
+    }
+
+    @Override
+    protected void onDestroy() {
+        RepositoryManager.getInstance().close();
+        super.onDestroy();
     }
 }
