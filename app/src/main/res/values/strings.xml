@@ -9,4 +9,12 @@
     <string name="drawer_add_repository">ADD REPOSITORY</string>
     <string name="drawer_list_tags">TAGS</string>
     <string name="drawer_select_date">SELECT DATE</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="toast_repository_not_loadable">Couldn\'t load the repository</string>
+    <string name="toast_repository_not_selected">You have not selected a repository yet</string>
+    <string name="symlinks_not_accepted">Symlinks cannot be processed</string>
+    <string name="dialog_loading">Loading...</string>
+    <string name="dialog_downloading_catalog">Downloading the catalog</string>
 </resources>

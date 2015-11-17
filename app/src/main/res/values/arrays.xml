@@ -4,6 +4,7 @@
         <item>ATLAS;atlas.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/atlas</item>
         <item>LHCb;lhcb.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/lhcb</item>
         <item>ALICE;alice.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/alice</item>
+        <item>CMS;cms.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/cms</item>
         <item>Geant4;geant4.cern.ch;http://cvmfs-stratum-one.cern.ch/opt/geant4</item>
         <item>MICE;mice.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/mice.egi.eu</item>
         <item>NA62;na62.egi.eu;http://cvmfs-egi.gridpp.rl.ac.uk:8000/cvmfs/na62.egi.eu</item>
