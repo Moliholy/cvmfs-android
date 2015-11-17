@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 
-public class CVMFSFragment extends Fragment {
+public abstract class CVMFSFragment extends Fragment {
 
     public boolean onBackPressed() {
         return false;
@@ -31,7 +31,8 @@ public class CVMFSFragment extends Fragment {
         return null;
     }
 
-    protected void onPrepareInterface() {
-
-    }
+    /**
+     * Called after onViewCreated
+     */
+    protected abstract void onPrepareInterface();
 }
