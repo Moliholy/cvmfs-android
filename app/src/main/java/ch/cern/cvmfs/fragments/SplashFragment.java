@@ -45,6 +45,11 @@ public class SplashFragment extends CVMFSFragment {
         }, 2000);
     }
 
+    @Override
+    protected void onPrepareInterface() {
+        // nothing to do here
+    }
+
 
     public interface SplashListener {
         void splashLoaded();
