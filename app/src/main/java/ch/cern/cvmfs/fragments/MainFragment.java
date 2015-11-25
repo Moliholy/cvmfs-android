@@ -2,6 +2,8 @@ package ch.cern.cvmfs.fragments;
 
 import android.app.ProgressDialog;
 import android.content.ContextWrapper;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,13 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.molina.cvmfs.repository.Repository;
+import com.molina.cvmfs.repository.exception.FileNotFoundInRepositoryException;
 
 import java.io.File;
+import java.net.URLConnection;
 
 import ch.cern.cvmfs.R;
 import ch.cern.cvmfs.listeners.RepositoryStatusListener;
@@ -160,13 +165,63 @@ public class MainFragment extends CVMFSFragment
 	}
 
 	@Override
-	public void fileSelected(String absolutePath) {
-		// TODO show the detail view
+	public void fileSelected(String path) {
+		new DownloadFile(path).execute();
 	}
 
 	@Override
 	public void browserBack() {
 		loadRepositorySelection();
+	}
+
+
+	private class DownloadFile extends AsyncTask<String, Void, File> {
+
+		private String path;
+
+		public DownloadFile(String path) {
+			this.path = path;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			progressDialog = ProgressDialog.show(getActivity(),
+					getResources().getString(R.string.dialog_loading),
+					getResources().getString(R.string.dialog_downloading_file),
+					true);
+		}
+
+		@Override
+		protected File doInBackground(String... params) {
+			final String path = this.path;
+			final File[] object = {null};
+			final Repository currentRepo = RepositoryManager.getInstance().getRepositoryInstance();
+			RepositoryManager.getInstance().addTask(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						object[0] = currentRepo.retrieveObject(path);
+					} catch (FileNotFoundInRepositoryException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			return object[0];
+		}
+
+		@Override
+		protected void onPostExecute(File file) {
+			if (file != null) {
+				String mimeType = URLConnection.guessContentTypeFromName(path);
+				Intent newIntent = new Intent(Intent.ACTION_VIEW);
+				newIntent.setDataAndType(Uri.fromFile(file), mimeType);
+				newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(newIntent);
+			} else {
+				Toast.makeText(getActivity(), R.string.toast_file_not_retrieved, Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 
 	private class LoadNewRepository extends AsyncTask<Void, Void, Void> {

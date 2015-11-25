@@ -134,6 +134,7 @@ public class BrowserFragment extends CVMFSFragment {
 						.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 				finalView = inflater.inflate(R.layout.item_layout, parent, false);
 			}
+			finalView.setBackgroundResource(R.color.ui_white);
 			final DirectoryEntry model = objects.get(position);
 
 			TextView itemName = (TextView) finalView.findViewById(R.id.item_name_textview);
@@ -143,7 +144,7 @@ public class BrowserFragment extends CVMFSFragment {
 				itemImage.setImageResource(R.drawable.ic_folder_open_black_24dp);
 				if (model.isNestedCatalogMountpoint()) {
 					//TODO: fix this
-					//itemImage.setBackgroundResource(R.color.catalog_background);
+					finalView.setBackgroundResource(R.color.catalog_background);
 				}
 			} else {
 				itemImage.setImageResource(R.drawable.ic_insert_drive_file_black_24dp);
