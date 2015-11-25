@@ -1,12 +1,14 @@
 package ch.cern.cvmfs.fragments;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -200,11 +202,7 @@ public class MainFragment extends CVMFSFragment
 
 				@Override
 				public void run() {
-					try {
-						object[0] = currentRepo.retrieveObject(path);
-					} catch (FileNotFoundInRepositoryException e) {
-						e.printStackTrace();
-					}
+					object[0] = currentRepo.getFile(path);
 				}
 			});
 			return object[0];
@@ -212,11 +210,17 @@ public class MainFragment extends CVMFSFragment
 
 		@Override
 		protected void onPostExecute(File file) {
+			progressDialog.dismiss();
 			if (file != null) {
-				String mimeType = URLConnection.guessContentTypeFromName(path);
+				Uri uri = FileProvider.getUriForFile(getActivity(), "ch.cern.cvmfs", file);
+				ContentResolver cr = getActivity().getContentResolver();
+				String mimeType = cr.getType(uri);
+				if (mimeType == null) {
+					mimeType = "*/*";
+				}
 				Intent newIntent = new Intent(Intent.ACTION_VIEW);
-				newIntent.setDataAndType(Uri.fromFile(file), mimeType);
-				newIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				newIntent.setDataAndType(uri, mimeType);
+				newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 				startActivity(newIntent);
 			} else {
 				Toast.makeText(getActivity(), R.string.toast_file_not_retrieved, Toast.LENGTH_LONG).show();
