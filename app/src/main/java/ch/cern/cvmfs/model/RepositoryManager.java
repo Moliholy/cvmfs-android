@@ -6,6 +6,7 @@ import android.content.Context;
 import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.repository.exception.CacheDirectoryNotFound;
 import com.molina.cvmfs.repository.exception.FailedToLoadSourceException;
+import com.molina.cvmfs.repository.exception.RepositoryNotFoundException;
 import com.molina.cvmfs.rootfile.exception.RootFileException;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import ch.cern.cvmfs.R;
 public class RepositoryManager extends Thread {
 
 	private static final Object LOCK = new Object();
+	private static final Object LOCK_INSTANCE = new Object();
 	private static RepositoryManager INSTANCE;
 	private Repository currentRepository;
 	private Queue<Runnable> tasks;
@@ -50,9 +52,9 @@ public class RepositoryManager extends Thread {
 	public void run() {
 		while (!closed) {
 			while (tasks.isEmpty()) {
-				synchronized (INSTANCE) {
+				synchronized (LOCK_INSTANCE) {
 					try {
-						INSTANCE.wait();
+						LOCK_INSTANCE.wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -68,7 +70,7 @@ public class RepositoryManager extends Thread {
 
 	public synchronized void close() {
 		closed = true;
-		INSTANCE.notify();
+		LOCK_INSTANCE.notifyAll();
 	}
 
 	public Repository setRepositoryInstance(final String url, final String cacheDirectory) {
@@ -78,7 +80,7 @@ public class RepositoryManager extends Thread {
 			public void run() {
 				try {
 					currentRepository = new Repository(url, cacheDirectory);
-				} catch (FailedToLoadSourceException | IOException | RootFileException | CacheDirectoryNotFound e) {
+				} catch (FailedToLoadSourceException | IOException | RootFileException | CacheDirectoryNotFound | RepositoryNotFoundException e) {
 					e.printStackTrace();
 				}
 			}
@@ -91,9 +93,9 @@ public class RepositoryManager extends Thread {
 	}
 
 	public void addTask(Runnable newTask) {
-		synchronized (INSTANCE) {
+		synchronized (LOCK_INSTANCE) {
 			tasks.add(newTask);
-			INSTANCE.notify();
+			LOCK_INSTANCE.notify();
 		}
 		synchronized (LOCK) {
 			try {
