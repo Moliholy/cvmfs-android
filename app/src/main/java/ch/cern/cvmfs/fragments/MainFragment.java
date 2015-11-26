@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.repository.exception.FileNotFoundInRepositoryException;
+import com.molina.cvmfs.revision.Revision;
 
 import java.io.File;
 import java.net.URLConnection;
@@ -202,7 +203,8 @@ public class MainFragment extends CVMFSFragment
 
 				@Override
 				public void run() {
-					object[0] = currentRepo.getFile(path);
+					Revision rev = currentRepo.getCurrentRevision();
+					object[0] = rev.getFile(path);
 				}
 			});
 			return object[0];

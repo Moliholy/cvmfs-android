@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.molina.cvmfs.directoryentry.DirectoryEntry;
 import com.molina.cvmfs.repository.Repository;
+import com.molina.cvmfs.revision.Revision;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,7 +170,8 @@ public class BrowserFragment extends CVMFSFragment {
 			RepositoryManager.getInstance().addTask(new Runnable() {
 				@Override
 				public void run() {
-					entries = currentRepo.listDirectory(path);
+					Revision rev = currentRepo.getCurrentRevision();
+					entries = rev.listDirectory(path);
 				}
 			});
 			return null;
