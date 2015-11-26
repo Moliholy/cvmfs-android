@@ -17,9 +17,9 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 
 	private View mView;
 	private LinearLayout rootFolderLayout;
-    private LinearLayout addRepositoryLayout;
-    private LinearLayout tagsLayout;
-    private LinearLayout selectDateLayout;
+	private LinearLayout addRepositoryLayout;
+	private LinearLayout tagsLayout;
+	private LinearLayout selectDateLayout;
 	private DrawerListener mCallback;
 	private TextView drawerFQRNTextview;
 
@@ -35,7 +35,7 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 			mCallback = (DrawerListener) getParentFragment();
 		} catch (ClassCastException e) {
 			throw new RuntimeException(getParentFragment() + " must implement " +
-                    DrawerListener.class.getName());
+					DrawerListener.class.getName());
 		}
 		super.onAttach(activity);
 	}
@@ -43,32 +43,32 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 	protected void onPrepareInterface() {
 		rootFolderLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_root_layout);
 		rootFolderLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCallback.drawerHomeSelected();
-            }
-        });
-        addRepositoryLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_add_repository);
-        addRepositoryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCallback.addRepositorySelected();
-            }
-        });
-        tagsLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_list_tags);
-        tagsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCallback.tagsSelected();
-            }
-        });
-        selectDateLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_select_date);
-        selectDateLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCallback.dateSelected();
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				mCallback.drawerHomeSelected();
+			}
+		});
+		addRepositoryLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_add_repository);
+		addRepositoryLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mCallback.addRepositorySelected();
+			}
+		});
+		tagsLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_list_tags);
+		tagsLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mCallback.tagsSelected();
+			}
+		});
+		selectDateLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_select_date);
+		selectDateLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				mCallback.dateSelected();
+			}
+		});
 		drawerFQRNTextview = (TextView) mView.findViewById(R.id.drawer_fqrn_textview);
 	}
 
@@ -79,8 +79,11 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 
 	public interface DrawerListener {
 		void drawerHomeSelected();
-        void addRepositorySelected();
-        void tagsSelected();
-        void dateSelected();
+
+		void addRepositorySelected();
+
+		void tagsSelected();
+
+		void dateSelected();
 	}
 }
