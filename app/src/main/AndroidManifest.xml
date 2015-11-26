@@ -24,7 +24,7 @@
         </activity>
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="ch.cern.cvmfs"
+            android:authorities="ch.cern.cvmfs.fragments.MainFragment"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

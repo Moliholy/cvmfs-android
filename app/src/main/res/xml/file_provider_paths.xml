@@ -1,5 +1,5 @@
 <paths>
     <files-path
         name="cache_directory"
-        path="files/CernVM_FS/data/"/>
+        path="CernVM_FS/data"/>
 </paths>

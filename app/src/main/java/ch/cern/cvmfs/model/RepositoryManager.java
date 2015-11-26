@@ -68,9 +68,11 @@ public class RepositoryManager extends Thread {
 		}
 	}
 
-	public synchronized void close() {
-		closed = true;
-		LOCK_INSTANCE.notifyAll();
+	public void close() {
+		synchronized (LOCK_INSTANCE) {
+			closed = true;
+			LOCK_INSTANCE.notifyAll();
+		}
 	}
 
 	public Repository setRepositoryInstance(final String url, final String cacheDirectory) {

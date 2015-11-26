@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -250,16 +251,16 @@ public class MainFragment extends CVMFSFragment
 		@Override
 		protected void onPostExecute(File file) {
 			progressDialog.dismiss();
-			if (file != null) {
-				Uri uri = FileProvider.getUriForFile(getActivity(), "ch.cern.cvmfs", file);
+			if (file != null && file.isFile()) {
+				Uri uri = FileProvider.getUriForFile(getActivity(), "ch.cern.cvmfs.fragments.MainFragment", file);
 				ContentResolver cr = getActivity().getContentResolver();
 				String mimeType = cr.getType(uri);
-				if (mimeType == null) {
+				if (mimeType == null || mimeType.contains("octet-stream")) {
 					mimeType = "*/*";
 				}
 				Intent newIntent = new Intent(Intent.ACTION_VIEW);
 				newIntent.setDataAndType(uri, mimeType);
-				newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+				newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(newIntent);
 			} else {
 				Toast.makeText(getActivity(), R.string.toast_file_not_retrieved, Toast.LENGTH_LONG).show();
