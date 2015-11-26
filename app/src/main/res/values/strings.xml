@@ -19,4 +19,6 @@
     <string name="dialog_downloading_catalog">Downloading the catalog</string>
     <string name="dialog_downloading_file">Downloading the file</string>
     <string name="toast_file_not_retrieved">Couldn\'t retrieve the selected file</string>
+    <string name="dialog_downloading_tags">Downloading tags</string>
+    <string name="toast_no_tags_found">No tags were found</string>
 </resources>
