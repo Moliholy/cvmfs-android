@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.molina.cvmfs.history.RevisionTag;
 import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.repository.exception.FileNotFoundInRepositoryException;
 import com.molina.cvmfs.revision.Revision;
@@ -34,235 +35,274 @@ import ch.cern.cvmfs.model.RepositoryManager;
 
 
 public class MainFragment extends CVMFSFragment
-		implements SplashFragment.SplashListener, DrawerFragment.DrawerListener,
-		RepositorySelectionFragment.RepositorySelectionListener, BrowserFragment.BrowserFragmentListener {
+        implements SplashFragment.SplashListener, DrawerFragment.DrawerListener,
+        RepositorySelectionFragment.RepositorySelectionListener,
+        BrowserFragment.BrowserFragmentListener, TagSelectionFragment.TagSelectionListener {
 
-	private static final int MAX_PATH_LENGTH = 25;
-	private Toolbar toolbar;
-	private View mView;
-	private TextView menuTitleTextView;
-	private ImageView drawerSwitcherImg;
-	private DrawerLayout drawerLayout;
-	private ImageView menuBackImg;
-	private ImageView menuLogoImageView;
-	private View mRightDrawerView;
-	private ProgressDialog progressDialog;
+    private static final int MAX_PATH_LENGTH = 25;
+    private Toolbar toolbar;
+    private View mView;
+    private TextView menuTitleTextView;
+    private ImageView drawerSwitcherImg;
+    private DrawerLayout drawerLayout;
+    private ImageView menuBackImg;
+    private ImageView menuLogoImageView;
+    private View mRightDrawerView;
+    private ProgressDialog progressDialog;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		return mView = inflater.inflate(R.layout.fragment_main, container, false);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return mView = inflater.inflate(R.layout.fragment_main, container, false);
+    }
 
-	@Override
-	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		prepareFragments();
-		if (savedInstanceState == null) {
-			loadSplash();
-		}
-	}
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        prepareFragments();
+        if (savedInstanceState == null) {
+            loadSplash();
+        }
+    }
 
-	@Override
-	protected void onPrepareInterface() {
-		toolbar = (Toolbar) mView.findViewById(R.id.main_toolbar);
-		mRightDrawerView = mView.findViewById(R.id.loggedin_main_right_frame);
-		drawerLayout = (DrawerLayout) mView.findViewById(R.id.drawer_content_layout);
-		drawerSwitcherImg = (ImageView) mView.findViewById(R.id.menu_drawer_btn);
-		drawerSwitcherImg.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (drawerLayout.isDrawerOpen(mRightDrawerView)) {
-					drawerLayout.closeDrawer(mRightDrawerView);
-				} else {
-					drawerLayout.openDrawer(mRightDrawerView);
-				}
-			}
-		});
-		menuBackImg = (ImageView) mView.findViewById(R.id.menu_back_btn);
-		menuTitleTextView = (TextView) mView.findViewById(R.id.menu_title_textview);
-		menuLogoImageView = (ImageView) mView.findViewById(R.id.menu_logo_imageview);
-		menuBackImg.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
-	}
+    @Override
+    protected void onPrepareInterface() {
+        toolbar = (Toolbar) mView.findViewById(R.id.main_toolbar);
+        mRightDrawerView = mView.findViewById(R.id.loggedin_main_right_frame);
+        drawerLayout = (DrawerLayout) mView.findViewById(R.id.drawer_content_layout);
+        drawerSwitcherImg = (ImageView) mView.findViewById(R.id.menu_drawer_btn);
+        drawerSwitcherImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (drawerLayout.isDrawerOpen(mRightDrawerView)) {
+                    drawerLayout.closeDrawer(mRightDrawerView);
+                } else {
+                    drawerLayout.openDrawer(mRightDrawerView);
+                }
+            }
+        });
+        menuBackImg = (ImageView) mView.findViewById(R.id.menu_back_btn);
+        menuTitleTextView = (TextView) mView.findViewById(R.id.menu_title_textview);
+        menuLogoImageView = (ImageView) mView.findViewById(R.id.menu_logo_imageview);
+        menuBackImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
 
-	private void prepareFragments() {
-		replaceFragment(new DrawerFragment(), R.id.loggedin_main_right_frame);
-		drawerLayout.setDrawerListener(new ActionBarDrawerToggle(getActivity(),
-				drawerLayout, R.string.drawer_opened, R.string.drawer_closed));
-	}
+    private void prepareFragments() {
+        replaceFragment(new DrawerFragment(), R.id.loggedin_main_right_frame);
+        drawerLayout.setDrawerListener(new ActionBarDrawerToggle(getActivity(),
+                drawerLayout, R.string.drawer_opened, R.string.drawer_closed));
+    }
 
-	@Override
-	public boolean onBackPressed() {
-		if (drawerLayout.isDrawerOpen(mRightDrawerView)) {
-			drawerLayout.closeDrawer(mRightDrawerView);
-			return true;
-		}
-		CVMFSFragment currentFragment = getCurrentFragment(R.id.main_container_frame);
-		return currentFragment != null && currentFragment.onBackPressed();
-	}
+    @Override
+    public boolean onBackPressed() {
+        if (drawerLayout.isDrawerOpen(mRightDrawerView)) {
+            drawerLayout.closeDrawer(mRightDrawerView);
+            return true;
+        }
+        CVMFSFragment currentFragment = getCurrentFragment(R.id.main_container_frame);
+        return currentFragment != null && currentFragment.onBackPressed();
+    }
 
-	public void loadSplash() {
-		toolbar.setVisibility(View.GONE);
-		replaceFragment(new SplashFragment(), R.id.main_container_frame);
-	}
+    public void loadSplash() {
+        toolbar.setVisibility(View.GONE);
+        replaceFragment(new SplashFragment(), R.id.main_container_frame);
+    }
 
-	private void loadRepositorySelection() {
-		toolbar.setVisibility(View.VISIBLE);
-		menuTitleTextView.setVisibility(View.GONE);
-		menuLogoImageView.setVisibility(View.VISIBLE);
-		replaceFragment(new RepositorySelectionFragment(), R.id.main_container_frame);
-	}
+    private void loadRepositorySelection() {
+        toolbar.setVisibility(View.VISIBLE);
+        menuTitleTextView.setVisibility(View.GONE);
+        menuLogoImageView.setVisibility(View.VISIBLE);
+        replaceFragment(new RepositorySelectionFragment(), R.id.main_container_frame);
+    }
 
-	private void replaceBrowserPath(String newPath) {
-		menuLogoImageView.setVisibility(View.GONE);
-		String displayPath = newPath;
-		if (displayPath.length() > MAX_PATH_LENGTH) {
-			displayPath = displayPath.substring(0, MAX_PATH_LENGTH) + "...";
-		}
-		menuTitleTextView.setText(displayPath);
-		CVMFSFragment newFragment = new BrowserFragment();
-		Bundle bundle = new Bundle();
-		bundle.putString("path", newPath);
-		newFragment.setArguments(bundle);
-		replaceFragment(newFragment, R.id.main_container_frame);
-	}
+    private void loadTagSelection() {
+        if (RepositoryManager.getInstance().getRepositoryInstance() != null) {
+            toolbar.setVisibility(View.GONE);
+            replaceFragment(new TagSelectionFragment(), R.id.main_container_frame);
+        } else {
+            showRepositoryNotLoadedMessage();
+        }
+    }
 
-	private void loadRepositoryView(RepositoryDescription chosen) {
-		// find the drawer fragment first
-		RepositoryStatusListener rsl = (RepositoryStatusListener) getCurrentFragment(R.id.loggedin_main_right_frame);
-		rsl.repositoryChanged(chosen);
-		new LoadNewRepository(chosen.getUrl()).execute();
-	}
+    private void replaceBrowserPath(String newPath) {
+        menuLogoImageView.setVisibility(View.GONE);
+        String displayPath = newPath;
+        if (displayPath.length() > MAX_PATH_LENGTH) {
+            displayPath = displayPath.substring(0, MAX_PATH_LENGTH) + "...";
+        }
+        menuTitleTextView.setText(displayPath);
+        CVMFSFragment newFragment = new BrowserFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("path", newPath);
+        newFragment.setArguments(bundle);
+        replaceFragment(newFragment, R.id.main_container_frame);
+    }
 
-	@Override
-	public void splashLoaded() {
-		loadRepositorySelection();
-	}
+    private void loadRepositoryView(RepositoryDescription chosen) {
+        // find the drawer fragment first
+        RepositoryStatusListener rsl = (RepositoryStatusListener) getCurrentFragment(R.id.loggedin_main_right_frame);
+        rsl.repositoryChanged(chosen);
+        new LoadNewRepository(chosen.getUrl()).execute();
+    }
 
-	@Override
-	public void drawerHomeSelected() {
-		Repository repo = RepositoryManager.getInstance().getRepositoryInstance();
-		if (repo == null) {
-			Toast.makeText(getActivity(), R.string.toast_repository_not_selected,
-					Toast.LENGTH_SHORT).show();
-			return;
-		}
-		menuTitleTextView.setVisibility(View.VISIBLE);
-		menuTitleTextView.setText("/");
-		replaceBrowserPath("");
-	}
+    private void showRepositoryNotLoadedMessage() {
+        Toast.makeText(getActivity(), R.string.toast_repository_not_selected,
+                Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	public void repositoryChosen(RepositoryDescription chosen) {
-		loadRepositoryView(chosen);
-	}
+    @Override
+    public void splashLoaded() {
+        loadRepositorySelection();
+    }
 
-	@Override
-	public void directorySelected(String absolutePath) {
-		replaceBrowserPath(absolutePath);
-	}
+    @Override
+    public void drawerHomeSelected() {
+        Repository repo = RepositoryManager.getInstance().getRepositoryInstance();
+        if (repo == null) {
+            showRepositoryNotLoadedMessage();
+            return;
+        }
+        menuTitleTextView.setVisibility(View.VISIBLE);
+        menuTitleTextView.setText("/");
+        replaceBrowserPath("");
+    }
 
-	@Override
-	public void fileSelected(String path) {
-		new DownloadFile(path).execute();
-	}
+    @Override
+    public void addRepositorySelected() {
 
-	@Override
-	public void browserBack() {
-		loadRepositorySelection();
-	}
+    }
+
+    @Override
+    public void tagsSelected() {
+        loadTagSelection();
+    }
+
+    @Override
+    public void dateSelected() {
+
+    }
+
+    @Override
+    public void repositoryChosen(RepositoryDescription chosen) {
+        loadRepositoryView(chosen);
+    }
+
+    @Override
+    public void directorySelected(String absolutePath) {
+        replaceBrowserPath(absolutePath);
+    }
+
+    @Override
+    public void fileSelected(String path) {
+        new DownloadFile(path).execute();
+    }
+
+    @Override
+    public void browserBack() {
+        loadRepositorySelection();
+    }
+
+    @Override
+    public void tagSelectionBack() {
+
+    }
+
+    @Override
+    public void tagSelected(RevisionTag revisionTag) {
+
+    }
 
 
-	private class DownloadFile extends AsyncTask<String, Void, File> {
+    private class DownloadFile extends AsyncTask<String, Void, File> {
 
-		private String path;
+        private String path;
 
-		public DownloadFile(String path) {
-			this.path = path;
-		}
+        public DownloadFile(String path) {
+            this.path = path;
+        }
 
-		@Override
-		protected void onPreExecute() {
-			progressDialog = ProgressDialog.show(getActivity(),
-					getResources().getString(R.string.dialog_loading),
-					getResources().getString(R.string.dialog_downloading_file),
-					true);
-		}
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(getActivity(),
+                    getResources().getString(R.string.dialog_loading),
+                    getResources().getString(R.string.dialog_downloading_file),
+                    true);
+        }
 
-		@Override
-		protected File doInBackground(String... params) {
-			final String path = this.path;
-			final File[] object = {null};
-			final Repository currentRepo = RepositoryManager.getInstance().getRepositoryInstance();
-			RepositoryManager.getInstance().addTask(new Runnable() {
+        @Override
+        protected File doInBackground(String... params) {
+            final String path = this.path;
+            final File[] object = {null};
+            final Repository currentRepo = RepositoryManager.getInstance().getRepositoryInstance();
+            RepositoryManager.getInstance().addTask(new Runnable() {
 
-				@Override
-				public void run() {
-					Revision rev = currentRepo.getCurrentRevision();
-					object[0] = rev.getFile(path);
-				}
-			});
-			return object[0];
-		}
+                @Override
+                public void run() {
+                    Revision rev = currentRepo.getCurrentRevision();
+                    object[0] = rev.getFile(path);
+                }
+            });
+            return object[0];
+        }
 
-		@Override
-		protected void onPostExecute(File file) {
-			progressDialog.dismiss();
-			if (file != null) {
-				Uri uri = FileProvider.getUriForFile(getActivity(), "ch.cern.cvmfs", file);
-				ContentResolver cr = getActivity().getContentResolver();
-				String mimeType = cr.getType(uri);
-				if (mimeType == null) {
-					mimeType = "*/*";
-				}
-				Intent newIntent = new Intent(Intent.ACTION_VIEW);
-				newIntent.setDataAndType(uri, mimeType);
-				newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-				startActivity(newIntent);
-			} else {
-				Toast.makeText(getActivity(), R.string.toast_file_not_retrieved, Toast.LENGTH_LONG).show();
-			}
-		}
-	}
+        @Override
+        protected void onPostExecute(File file) {
+            progressDialog.dismiss();
+            if (file != null) {
+                Uri uri = FileProvider.getUriForFile(getActivity(), "ch.cern.cvmfs", file);
+                ContentResolver cr = getActivity().getContentResolver();
+                String mimeType = cr.getType(uri);
+                if (mimeType == null) {
+                    mimeType = "*/*";
+                }
+                Intent newIntent = new Intent(Intent.ACTION_VIEW);
+                newIntent.setDataAndType(uri, mimeType);
+                newIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(newIntent);
+            } else {
+                Toast.makeText(getActivity(), R.string.toast_file_not_retrieved, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
-	private class LoadNewRepository extends AsyncTask<Void, Void, Void> {
+    private class LoadNewRepository extends AsyncTask<Void, Void, Void> {
 
-		String url;
+        String url;
 
-		public LoadNewRepository(String url) {
-			this.url = url;
-		}
+        public LoadNewRepository(String url) {
+            this.url = url;
+        }
 
-		@Override
-		protected void onPreExecute() {
-			progressDialog = ProgressDialog.show(getActivity(),
-					getResources().getString(R.string.dialog_loading),
-					getResources().getString(R.string.dialog_downloading_catalog),
-					true);
-		}
+        @Override
+        protected void onPreExecute() {
+            progressDialog = ProgressDialog.show(getActivity(),
+                    getResources().getString(R.string.dialog_loading),
+                    getResources().getString(R.string.dialog_downloading_catalog),
+                    true);
+        }
 
-		@Override
-		protected Void doInBackground(Void... params) {
-			ContextWrapper cw = new ContextWrapper(getActivity());
-			File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
-			RepositoryManager.getInstance().setRepositoryInstance(url, mainStorageDirectory.getAbsolutePath());
-			return null;
-		}
+        @Override
+        protected Void doInBackground(Void... params) {
+            ContextWrapper cw = new ContextWrapper(getActivity());
+            File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
+            RepositoryManager.getInstance().setRepositoryInstance(url, mainStorageDirectory.getAbsolutePath());
+            return null;
+        }
 
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			progressDialog.dismiss();
-			if (RepositoryManager.getInstance().getRepositoryInstance() == null) {
-				Toast.makeText(getActivity(), R.string.toast_repository_not_loadable, Toast.LENGTH_SHORT).show();
-				return;
-			}
-			menuTitleTextView.setVisibility(View.VISIBLE);
-			replaceBrowserPath("");
-		}
-	}
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            progressDialog.dismiss();
+            if (RepositoryManager.getInstance().getRepositoryInstance() == null) {
+                Toast.makeText(getActivity(), R.string.toast_repository_not_loadable, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            menuTitleTextView.setVisibility(View.VISIBLE);
+            replaceBrowserPath("");
+        }
+    }
 }
