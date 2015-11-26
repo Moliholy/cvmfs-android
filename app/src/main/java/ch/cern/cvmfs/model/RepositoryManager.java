@@ -61,9 +61,10 @@ public class RepositoryManager extends Thread {
 				}
 			}
 			Runnable task = tasks.poll();
-			task.run();
+			if (task != null)
+				task.run();
 			synchronized (LOCK) {
-				LOCK.notify();
+				LOCK.notifyAll();
 			}
 		}
 	}
@@ -97,7 +98,7 @@ public class RepositoryManager extends Thread {
 	public void addTask(Runnable newTask) {
 		synchronized (LOCK_INSTANCE) {
 			tasks.add(newTask);
-			LOCK_INSTANCE.notify();
+			LOCK_INSTANCE.notifyAll();
 		}
 		synchronized (LOCK) {
 			try {
