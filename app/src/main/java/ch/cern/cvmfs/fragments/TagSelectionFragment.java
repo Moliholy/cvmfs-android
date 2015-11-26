@@ -103,7 +103,7 @@ public class TagSelectionFragment extends CVMFSFragment {
 			if (finalView == null) {
 				LayoutInflater inflater = (LayoutInflater) getActivity()
 						.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-				finalView = inflater.inflate(R.layout.item_layout, parent, false);
+				finalView = inflater.inflate(R.layout.tag_layout, parent, false);
 			}
 			finalView.setBackgroundResource(R.color.ui_white);
 			final RevisionTag model = tags.get(position);
