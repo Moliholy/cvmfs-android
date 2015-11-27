@@ -15,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -112,6 +111,8 @@ public class MainFragment extends CVMFSFragment
 	}
 
 	private void loadRepositorySelection() {
+        if (drawerLayout.isDrawerOpen(mRightDrawerView))
+            drawerLayout.closeDrawer(mRightDrawerView);
 		toolbar.setVisibility(View.VISIBLE);
 		menuTitleTextView.setVisibility(View.GONE);
 		menuLogoImageView.setVisibility(View.VISIBLE);
@@ -119,8 +120,9 @@ public class MainFragment extends CVMFSFragment
 	}
 
 	private void loadTagSelection() {
+        if (drawerLayout.isDrawerOpen(mRightDrawerView))
+            drawerLayout.closeDrawer(mRightDrawerView);
 		if (RepositoryManager.getInstance().getRepositoryInstance() != null) {
-			toolbar.setVisibility(View.GONE);
 			replaceFragment(new TagSelectionFragment(), R.id.main_container_frame);
 		} else {
 			showRepositoryNotLoadedMessage();
