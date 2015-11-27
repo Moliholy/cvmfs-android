@@ -50,10 +50,4 @@ public class MainActivity extends ActionBarActivity {
 	protected CVMFSFragment getCurrentFragment(int idContainer) {
 		return (CVMFSFragment) getSupportFragmentManager().findFragmentById(idContainer);
 	}
-
-	@Override
-	protected void onDestroy() {
-		RepositoryManager.getInstance().close();
-		super.onDestroy();
-	}
 }
