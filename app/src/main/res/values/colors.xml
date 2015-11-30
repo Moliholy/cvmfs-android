@@ -19,4 +19,5 @@
     <color name="DrawerItemBackground">#FFFFFFFF</color>
     <color name="DrawerNavigationBackground">#FFFFFFFF</color>
     <color name="catalog_background">#88f9dfab</color>
+    <color name="backgroundCERN_tranlucid">#77295EA5</color>
 </resources>
