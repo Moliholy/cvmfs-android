@@ -135,45 +135,10 @@
 
             </LinearLayout>
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/ui_graydivider"/>
-
-            <LinearLayout
-                android:id="@+id/drawer_option_select_date"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_centerInParent="true"
-                android:background="@color/DrawerItemBackground"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp">
-
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_today_black_24dp"/>
-
-                <TextView
-                    style="@style/DrawerGeneric"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="@string/drawer_select_date"/>
-
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/ui_graydivider"/>
-
 
         </LinearLayout>
 
