@@ -36,7 +36,6 @@ public class MainFragment extends CVMFSFragment
 		RepositorySelectionFragment.RepositorySelectionListener,
 		BrowserFragment.BrowserFragmentListener, TagSelectionFragment.TagSelectionListener {
 
-	private static final int MAX_PATH_LENGTH = 25;
 	private Toolbar toolbar;
 	private View mView;
 	private TextView menuTitleTextView;
@@ -46,10 +45,24 @@ public class MainFragment extends CVMFSFragment
 	private ImageView menuLogoImageView;
 	private View mRightDrawerView;
 	private ProgressDialog progressDialog;
+    private String lastVisitedPath;
+    private int lastRevision;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            lastRevision = savedInstanceState.getInt("revision");
+            lastVisitedPath = savedInstanceState.getString("path");
+            if (lastRevision > 0) {
+                menuLogoImageView.setVisibility(View.GONE);
+                menuTitleTextView.setVisibility(View.VISIBLE);
+                menuTitleTextView.setText(lastVisitedPath);
+            }
+        } else {
+            lastRevision = -1;
+            lastVisitedPath = "";
+        }
 		return mView = inflater.inflate(R.layout.fragment_main, container, false);
 	}
 
@@ -62,7 +75,14 @@ public class MainFragment extends CVMFSFragment
 		}
 	}
 
-	@Override
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("revision", lastRevision);
+        outState.putString("path", lastVisitedPath);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
 	protected void onPrepareInterface() {
 		toolbar = (Toolbar) mView.findViewById(R.id.main_toolbar);
 		mRightDrawerView = mView.findViewById(R.id.loggedin_main_right_frame);
@@ -82,11 +102,11 @@ public class MainFragment extends CVMFSFragment
 		menuTitleTextView = (TextView) mView.findViewById(R.id.menu_title_textview);
 		menuLogoImageView = (ImageView) mView.findViewById(R.id.menu_logo_imageview);
 		menuBackImg.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				onBackPressed();
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 	}
 
 	private void prepareFragments() {
@@ -129,16 +149,15 @@ public class MainFragment extends CVMFSFragment
 		}
 	}
 
-	private void replaceBrowserPath(String newPath) {
+	private void replaceBrowserPath() {
 		menuLogoImageView.setVisibility(View.GONE);
-		String displayPath = newPath;
-		if (displayPath.length() > MAX_PATH_LENGTH) {
-			displayPath = displayPath.substring(0, MAX_PATH_LENGTH) + "...";
-		}
-		menuTitleTextView.setText(displayPath);
+        menuTitleTextView.setText(R.string.revision_latest);
+        if (lastRevision > 0)
+            menuTitleTextView.setText(Integer.toString(lastRevision));
 		CVMFSFragment newFragment = new BrowserFragment();
 		Bundle bundle = new Bundle();
-		bundle.putString("path", newPath);
+		bundle.putString("path", lastVisitedPath);
+        bundle.putInt("revision", lastRevision);
 		newFragment.setArguments(bundle);
 		replaceFragment(newFragment, R.id.main_container_frame);
 	}
@@ -167,9 +186,11 @@ public class MainFragment extends CVMFSFragment
 			showRepositoryNotLoadedMessage();
 			return;
 		}
+        drawerLayout.closeDrawer(mRightDrawerView);
 		menuTitleTextView.setVisibility(View.VISIBLE);
 		menuTitleTextView.setText("/");
-		replaceBrowserPath("");
+        lastVisitedPath = "";
+        replaceBrowserPath();
 	}
 
 	@Override
@@ -183,18 +204,15 @@ public class MainFragment extends CVMFSFragment
 	}
 
 	@Override
-	public void dateSelected() {
-
-	}
-
-	@Override
 	public void repositoryChosen(RepositoryDescription chosen) {
 		loadRepositoryView(chosen);
 	}
 
 	@Override
-	public void directorySelected(String absolutePath) {
-		replaceBrowserPath(absolutePath);
+	public void directorySelected(String absolutePath, int revision) {
+        lastVisitedPath = absolutePath;
+        lastRevision = revision;
+        replaceBrowserPath();
 	}
 
 	@Override
@@ -204,17 +222,21 @@ public class MainFragment extends CVMFSFragment
 
 	@Override
 	public void browserBack() {
+        lastRevision = -1;
+        lastVisitedPath = "";
 		loadRepositorySelection();
 	}
 
 	@Override
 	public void tagSelectionBack() {
-
+        replaceBrowserPath();
 	}
 
 	@Override
 	public void tagSelected(RevisionTag revisionTag) {
-
+        lastRevision = revisionTag.getRevision();
+        lastVisitedPath = "";
+        replaceBrowserPath();
 	}
 
 
@@ -302,7 +324,9 @@ public class MainFragment extends CVMFSFragment
 				return;
 			}
 			menuTitleTextView.setVisibility(View.VISIBLE);
-			replaceBrowserPath("");
+            lastRevision = RepositoryManager.getInstance().getRepositoryInstance().getManifest().getRevision();
+            lastVisitedPath = "";
+            replaceBrowserPath();
 		}
 	}
 }
