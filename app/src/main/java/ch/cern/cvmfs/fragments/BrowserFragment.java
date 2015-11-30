@@ -35,6 +35,9 @@ public class BrowserFragment extends CVMFSFragment {
 	private BrowserFragmentListener mCallback;
     private int revision;
 
+    private int topList;
+    private int indexList;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
@@ -46,10 +49,24 @@ public class BrowserFragment extends CVMFSFragment {
 		super.onViewCreated(view, savedInstanceState);
 		path = getArguments().getString("path");
 		revision = getArguments().getInt("revision");
+        if (savedInstanceState != null) {
+            topList = savedInstanceState.getInt("top_list");
+            indexList = savedInstanceState.getInt("index_list");
+        }
 		new RepositoryOperation().execute();
 	}
 
-	@Override
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int index = mainListView.getFirstVisiblePosition();
+        View v = mainListView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - mainListView.getPaddingTop());
+        outState.putInt("top_list", top);
+        outState.putInt("index_list", index);
+    }
+
+    @Override
 	public boolean onBackPressed() {
 		int pos = path.lastIndexOf("/");
 		if (pos >= 0) {
@@ -184,8 +201,8 @@ public class BrowserFragment extends CVMFSFragment {
 			mainListView.setVisibility(View.VISIBLE);
 			((FSAdapter) mainListView.getAdapter()).setObjects(entries);
 			((FSAdapter) mainListView.getAdapter()).notifyDataSetChanged();
+            mainListView.setSelectionFromTop(indexList, topList);
 		}
-
 
 	}
 
