@@ -2,6 +2,7 @@ package ch.cern.cvmfs.fragments;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ public class RepositorySelectionFragment extends CVMFSFragment {
 	private RepositoryDescription selectedRepository;
 	private Button enterButton;
 	private RepositorySelectionListener mCallback;
+    private int chosenPosition;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,11 +34,26 @@ public class RepositorySelectionFragment extends CVMFSFragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		repositoryDescriptions = RepositoryManager.getRepositoryList(getActivity());
-		super.onViewCreated(view, savedInstanceState);
+        chosenPosition = retrieveChosenPosition();
+        super.onViewCreated(view, savedInstanceState);
 	}
 
-	@Override
+    @Override
+    public void onDestroy() {
+        storeSelectedPosition();
+        super.onDestroy();
+    }
+
+    private void storeSelectedPosition() {
+        getActivity().getPreferences(Context.MODE_PRIVATE)
+                .edit().putInt("position", chosenPosition).commit();
+    }
+
+    private int retrieveChosenPosition() {
+        return getActivity().getPreferences(Context.MODE_PRIVATE).getInt("position", 0);
+    }
+
+    @Override
 	public void onAttach(Activity activity) {
 		try {
 			mCallback = (RepositorySelectionListener) getParentFragment();
@@ -49,6 +66,7 @@ public class RepositorySelectionFragment extends CVMFSFragment {
 
 	@Override
 	protected void onPrepareInterface() {
+        repositoryDescriptions = RepositoryManager.getRepositoryList(getActivity());
 		repositorySpinner = (Spinner) mView.findViewById(R.id.repo_selection_fqrn_spinner);
 		enterButton = (Button) mView.findViewById(R.id.repo_selection_enter_button);
 
@@ -57,11 +75,13 @@ public class RepositorySelectionFragment extends CVMFSFragment {
 		arrayAdapter.addAll(repositoryDescriptions);
 		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		repositorySpinner.setAdapter(arrayAdapter);
+        repositorySpinner.setSelection(chosenPosition);
 		repositorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				selectedRepository = repositoryDescriptions[position];
 				enterButton.setEnabled(true);
+                chosenPosition = position;
 			}
 
 			@Override
