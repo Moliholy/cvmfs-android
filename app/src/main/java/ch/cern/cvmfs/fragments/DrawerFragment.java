@@ -52,9 +52,9 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         String topText = drawerTopTextview.getText().toString();
         outState.putString("top_text", topText);
-        super.onSaveInstanceState(outState);
     }
 
     protected void onPrepareInterface() {
