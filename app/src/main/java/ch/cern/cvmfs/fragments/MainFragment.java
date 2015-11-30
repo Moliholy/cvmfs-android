@@ -54,11 +54,6 @@ public class MainFragment extends CVMFSFragment
         if (savedInstanceState != null) {
             lastRevision = savedInstanceState.getInt("revision");
             lastVisitedPath = savedInstanceState.getString("path");
-            if (lastRevision > 0) {
-                menuLogoImageView.setVisibility(View.GONE);
-                menuTitleTextView.setVisibility(View.VISIBLE);
-                menuTitleTextView.setText(lastVisitedPath);
-            }
         } else {
             lastRevision = -1;
             lastVisitedPath = "";
@@ -72,7 +67,11 @@ public class MainFragment extends CVMFSFragment
 		prepareFragments();
 		if (savedInstanceState == null) {
 			loadSplash();
-		}
+		} else if (lastRevision > 0) {
+            menuLogoImageView.setVisibility(View.GONE);
+            menuTitleTextView.setVisibility(View.VISIBLE);
+            menuTitleTextView.setText(lastVisitedPath);
+        }
 	}
 
     @Override
