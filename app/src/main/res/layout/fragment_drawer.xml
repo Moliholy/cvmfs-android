@@ -145,7 +145,7 @@
     </ScrollView>
 
     <LinearLayout
-        android:id="@+id/drawer_option_logout_layout"
+        android:id="@+id/drawer_option_exit_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_centerInParent="true"
@@ -163,7 +163,6 @@
             android:src="@drawable/ic_close_black_24dp"/>
 
         <TextView
-            android:id="@+id/drawer_exit_textview"
             style="@style/DrawerGeneric"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
