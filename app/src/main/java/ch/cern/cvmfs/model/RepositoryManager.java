@@ -76,6 +76,11 @@ public class RepositoryManager extends Thread {
         }
     }
 
+    public void removeRepositoryInstance() {
+        tasks.clear();
+        currentRepository = null;
+    }
+
     public Repository setRepositoryInstance(final String url, final String cacheDirectory) {
         tasks.clear();
         addTask(new Runnable() {
@@ -103,7 +108,7 @@ public class RepositoryManager extends Thread {
         }
         synchronized (LOCK) {
             try {
-                Log.d("LOCK", "Waiting!");
+                Log.d("LOCK", "Waiting until the task finishes");
                 LOCK.wait();
                 Log.d("LOCK", "Just woke up after wait()");
             } catch (InterruptedException e) {
