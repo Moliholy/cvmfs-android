@@ -33,18 +33,19 @@ public class BrowserFragment extends CVMFSFragment {
 	private String path;
 	private List<DirectoryEntry> entries;
 	private BrowserFragmentListener mCallback;
+    private int revision;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
-		mView = inflater.inflate(R.layout.fragment_browser, container, false);
-		return mView;
+		return mView = inflater.inflate(R.layout.fragment_browser, container, false);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		path = getArguments().getString("path");
+		revision = getArguments().getInt("revision");
 		new RepositoryOperation().execute();
 	}
 
@@ -53,7 +54,7 @@ public class BrowserFragment extends CVMFSFragment {
 		int pos = path.lastIndexOf("/");
 		if (pos >= 0) {
 			String parentPath = path.substring(0, pos);
-			mCallback.directorySelected(parentPath);
+			mCallback.directorySelected(parentPath, revision);
 			return true;
 		}
 		mCallback.browserBack();
@@ -83,16 +84,16 @@ public class BrowserFragment extends CVMFSFragment {
 		DirectoryEntry selectedDirent = entries.get(position);
 		String absolutePath = path + "/" + selectedDirent.getName();
 		if (selectedDirent.isDirectory()) {
-			mCallback.directorySelected(absolutePath);
+			mCallback.directorySelected(absolutePath, revision);
 		} else if (selectedDirent.isSymplink()) {
-			Toast.makeText(getActivity(), R.string.symlinks_not_accepted, Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), R.string.symlinks_not_accepted, Toast.LENGTH_SHORT).show();
 		} else {  // it's a file then
 			mCallback.fileSelected(absolutePath);
 		}
 	}
 
 	public interface BrowserFragmentListener {
-		void directorySelected(String absolutePath);
+		void directorySelected(String absolutePath, int revision);
 
 		void fileSelected(String absolutePath);
 
@@ -144,7 +145,6 @@ public class BrowserFragment extends CVMFSFragment {
 			if (model.isDirectory()) {
 				itemImage.setImageResource(R.drawable.ic_folder_open_black_24dp);
 				if (model.isNestedCatalogMountpoint()) {
-					//TODO: fix this
 					finalView.setBackgroundResource(R.color.catalog_background);
 				}
 			} else {
@@ -170,7 +170,8 @@ public class BrowserFragment extends CVMFSFragment {
 			RepositoryManager.getInstance().addTask(new Runnable() {
 				@Override
 				public void run() {
-					Revision rev = currentRepo.getCurrentRevision();
+					Revision rev = revision == -1 ?
+                            currentRepo.getCurrentRevision() : currentRepo.getRevision(revision);
 					entries = rev.listDirectory(path);
 				}
 			});
