@@ -19,9 +19,8 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 	private LinearLayout rootFolderLayout;
 	private LinearLayout addRepositoryLayout;
 	private LinearLayout tagsLayout;
-	private LinearLayout selectDateLayout;
 	private DrawerListener mCallback;
-	private TextView drawerFQRNTextview;
+	private TextView drawerTopTextview;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,19 +61,12 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 				mCallback.tagsSelected();
 			}
 		});
-		selectDateLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_select_date);
-		selectDateLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mCallback.dateSelected();
-			}
-		});
-		drawerFQRNTextview = (TextView) mView.findViewById(R.id.drawer_fqrn_textview);
+		drawerTopTextview = (TextView) mView.findViewById(R.id.drawer_fqrn_textview);
 	}
 
 	@Override
 	public void repositoryChanged(RepositoryDescription repo) {
-		drawerFQRNTextview.setText(repo.getFqrn());
+		drawerTopTextview.setText(repo.getFqrn());
 	}
 
 	public interface DrawerListener {
@@ -83,7 +75,5 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
 		void addRepositorySelected();
 
 		void tagsSelected();
-
-		void dateSelected();
 	}
 }
