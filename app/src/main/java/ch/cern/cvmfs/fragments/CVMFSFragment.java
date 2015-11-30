@@ -16,6 +16,18 @@ public abstract class CVMFSFragment extends Fragment {
 		getActivity().overridePendingTransition(0, 0);
 	}
 
+    protected void addFragment(CVMFSFragment fragment, int containerId) {
+        getChildFragmentManager().beginTransaction().add(containerId, fragment)
+                .addToBackStack(null).commit();
+        getActivity().overridePendingTransition(0, 0);
+    }
+
+    protected void removeFragment(int containerId) {
+        CVMFSFragment currentFragment = getCurrentFragment(containerId);
+        getChildFragmentManager().beginTransaction().remove(currentFragment).commit();
+        getActivity().overridePendingTransition(0, 0);
+    }
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
