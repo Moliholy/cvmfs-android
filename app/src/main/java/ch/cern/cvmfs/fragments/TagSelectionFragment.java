@@ -56,7 +56,7 @@ public class TagSelectionFragment extends CVMFSFragment {
     @Override
     public boolean onBackPressed() {
         mCallback.tagSelectionBack();
-        return false;
+        return true;
     }
 
     @Override

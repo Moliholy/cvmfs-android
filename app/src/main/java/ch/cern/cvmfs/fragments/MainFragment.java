@@ -134,7 +134,6 @@ public class MainFragment extends CVMFSFragment
         RepositoryManager.getInstance().removeRepositoryInstance();
         menuTitleTextView.setVisibility(View.GONE);
         menuLogoImageView.setVisibility(View.VISIBLE);
-        removeFragment(R.id.main_container_frame);
         replaceFragment(new RepositorySelectionFragment(), R.id.main_container_frame);
     }
 
