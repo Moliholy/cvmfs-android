@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:background="@color/backgroundCERN"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/dialog_add_title"
+        android:textColor="@color/ui_white"
+        android:textSize="30dp"/>
+
+    <EditText
+        android:id="@+id/dialog_new_repo_name"
+        android:layout_width="250dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/ui_white"
+        android:hint="@string/dialog_repository_name"
+        android:textSize="15dp"/>
+
+    <EditText
+        android:id="@+id/dialog_new_repo_fqrn"
+        android:layout_width="250dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="25dp"
+        android:background="@color/ui_white"
+        android:hint="@string/dialog_repository_fqrn"
+        android:textSize="15dp"/>
+
+    <EditText
+        android:id="@+id/dialog_new_repo_url"
+        android:layout_width="250dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="50dp"
+        android:background="@color/ui_white"
+        android:hint="@string/dialog_repository_url"
+        android:inputType="textUri"
+        android:textSize="15dp"/>
+
+    <Button
+        android:id="@+id/dialog_new_repo_ok_button"
+        style="@style/RepoSelectionEnterButton"
+        android:layout_width="280dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/_ok"
+        android:textColor="@color/backgroundCERN"/>
+
+
+</LinearLayout>
