@@ -1,6 +1,7 @@
 package ch.cern.cvmfs.model;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -12,11 +13,17 @@ import com.molina.cvmfs.rootfile.exception.RootFileException;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import ch.cern.cvmfs.R;
 
 public class RepositoryManager extends Thread {
+
+	private static final String SAVED_REPOSITORIES_TAG = "saved_repositories";
 
     private static final Object LOCK = new Object();
     private static final Object LOCK_INSTANCE = new Object();
@@ -38,15 +45,36 @@ public class RepositoryManager extends Thread {
         return INSTANCE;
     }
 
-    public static RepositoryDescription[] getRepositoryList(Context context) {
-        String[] unformattedList = context.getResources().getStringArray(R.array.repo_list);
-        RepositoryDescription[] repos = new RepositoryDescription[unformattedList.length];
-        int i = 0;
+	public static void saveNewRepository(Context context,
+	                                     RepositoryDescription newRepository) {
+		Set<String> oldSet = retrieveSavedRepositories(context);
+		oldSet.add(newRepository.toStoredFormat());
+		context.getSharedPreferences("", Context.MODE_PRIVATE)
+				.edit()
+				.putStringSet(SAVED_REPOSITORIES_TAG, oldSet)
+				.commit();
+	}
+
+	public static Set<String> retrieveSavedRepositories(Context context) {
+		return context.getSharedPreferences("", Context.MODE_PRIVATE)
+				.getStringSet(SAVED_REPOSITORIES_TAG, new HashSet<String>());
+	}
+
+    public static RepositoryDescription[] getRepositoryList(Activity activity) {
+	    Set<String> savedRepos = retrieveSavedRepositories(activity);
+        List<RepositoryDescription> repos = new ArrayList<>();
+	    for (String repo : savedRepos) {
+		    String[] parts = repo.split(";");
+		    repos.add(new RepositoryDescription(parts[0], parts[1], parts[2]));
+	    }
+	    String[] unformattedList = activity.getResources()
+			    .getStringArray(R.array.repo_list);
         for (String repo : unformattedList) {
             String[] parts = repo.split(";");
-            repos[i++] = new RepositoryDescription(parts[0], parts[1], parts[2]);
+            repos.add(new RepositoryDescription(parts[0], parts[1],
+			        parts[2]));
         }
-        return repos;
+        return repos.toArray(new RepositoryDescription[repos.size()]);
     }
 
     @Override
