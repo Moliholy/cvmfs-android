@@ -23,4 +23,11 @@
     <string name="toast_no_tags_found">No tags were found</string>
     <string name="revision">Revision</string>
     <string name="revision_latest">Latest revision</string>
+    <string name="dialog_repository_name">Repository name</string>
+    <string name="dialog_repository_fqrn">Fully qualified repository name</string>
+    <string name="dialog_repository_url">Repository URL</string>
+    <string name="dialog_add_title">Add a new repository</string>
+    <string name="_ok">Ok</string>
+    <string name="new_repo_bad_input">Error processing the fields. Please make sure everything is correct</string>
+    <string name="new_repo_successfully_added">The new repository has been successfully added</string>
 </resources>
