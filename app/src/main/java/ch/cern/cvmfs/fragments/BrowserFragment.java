@@ -19,7 +19,6 @@ import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.revision.Revision;
 
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,12 +167,13 @@ public class BrowserFragment extends CVMFSFragment {
             }
             ImageView itemImage = (ImageView) finalView.findViewById(R.id.item_imageview);
 			if (model.isDirectory()) {
-				itemImage.setImageResource(R.drawable.ic_folder_open_black_24dp);
 				if (model.isNestedCatalogMountpoint()) {
-					finalView.setBackgroundResource(R.color.catalog_background);
-				}
+					itemImage.setImageResource(R.drawable.ic_folder_catalog);
+				} else {
+                    itemImage.setImageResource(R.drawable.ic_folder_normal);
+                }
 			} else {
-				itemImage.setImageResource(R.drawable.ic_insert_drive_file_black_24dp);
+				itemImage.setImageResource(R.drawable.ic_file);
 			}
 
 			final int accessedPosition = position;

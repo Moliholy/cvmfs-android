@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="60dp"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/tag_imageview"
@@ -22,15 +22,15 @@
             android:id="@+id/tag_name_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/backgroundCERN"
             android:layout_marginRight="10dp"
-            android:textSize="16dp" />
+            android:textColor="@color/backgroundCERN"
+            android:textSize="16dp"/>
 
         <TextView
             android:id="@+id/tag_date_textview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="13dp" />
+            android:textSize="13dp"/>
 
     </LinearLayout>
 

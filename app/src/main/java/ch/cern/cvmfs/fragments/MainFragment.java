@@ -48,6 +48,8 @@ public class MainFragment extends CVMFSFragment
     private String lastVisitedPath;
     private int lastRevision;
 
+    private static final String FRAGMENT_STACK_NAME = "main_fragment_stack";
+
     protected enum PathNavigation {
         PARENT, CHILD, HOME
     }
@@ -132,17 +134,19 @@ public class MainFragment extends CVMFSFragment
     private void loadRepositorySelection() {
         if (drawerLayout.isDrawerOpen(mRightDrawerView))
             drawerLayout.closeDrawer(mRightDrawerView);
+        removeFragments(FRAGMENT_STACK_NAME);
         toolbar.setVisibility(View.VISIBLE);
         RepositoryManager.getInstance().removeRepositoryInstance();
         menuTitleTextView.setVisibility(View.GONE);
         menuLogoImageView.setVisibility(View.VISIBLE);
+        removeFragment(R.id.main_container_frame);
         replaceFragment(new RepositorySelectionFragment(), R.id.main_container_frame);
     }
 
     private void loadTagSelection() {
         if (RepositoryManager.getInstance().getRepositoryInstance() != null) {
             drawerLayout.closeDrawer(mRightDrawerView);
-            addFragment(new TagSelectionFragment(), R.id.main_container_frame);
+            addFragment(new TagSelectionFragment(), R.id.main_container_frame, FRAGMENT_STACK_NAME);
         } else {
             showRepositoryNotLoadedMessage();
         }
@@ -166,14 +170,15 @@ public class MainFragment extends CVMFSFragment
         switch (navigation) {
             case CHILD:
                 CVMFSFragment newFragment = createNewBrowserFragment();
-                addFragment(newFragment, R.id.main_container_frame);
+                addFragment(newFragment, R.id.main_container_frame, FRAGMENT_STACK_NAME);
                 break;
             case PARENT:
                 removeFragment(R.id.main_container_frame);
                 break;
             case HOME:
+                //removeFragments(FRAGMENT_STACK_NAME);
                 CVMFSFragment homeFragment = createNewBrowserFragment();
-                replaceFragment(homeFragment, R.id.main_container_frame);
+                replaceFragment(homeFragment, R.id.main_container_frame, FRAGMENT_STACK_NAME);
                 break;
         }
 
@@ -251,6 +256,13 @@ public class MainFragment extends CVMFSFragment
         lastRevision = -1;
         lastVisitedPath = "";
         loadRepositorySelection();
+    }
+
+    @Override
+    public void parentSelected(String parentPath, int revision) {
+        lastVisitedPath = parentPath;
+        lastRevision = revision;
+        popFragment(R.id.main_container_frame, FRAGMENT_STACK_NAME);
     }
 
     @Override
