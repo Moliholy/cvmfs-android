@@ -37,6 +37,12 @@ public class RepositoryDescription {
         this.url = url;
     }
 
+	public String toStoredFormat() {
+		return name + ";" +
+				fqrn.replace(" ", "") + ";" +
+				url.replace(" ", "");
+	}
+
     @Override
     public String toString() {
         return name + " (" + fqrn + ")";
