@@ -2,7 +2,7 @@ package ch.cern.cvmfs.activities;
 
 import android.content.ContextWrapper;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import java.io.File;
@@ -11,7 +11,7 @@ import ch.cern.cvmfs.R;
 import ch.cern.cvmfs.fragments.CVMFSFragment;
 import ch.cern.cvmfs.fragments.MainFragment;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
