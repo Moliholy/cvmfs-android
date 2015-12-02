@@ -1,5 +1,6 @@
 package ch.cern.cvmfs.fragments;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContextWrapper;
@@ -24,8 +25,10 @@ import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.revision.Revision;
 
 import java.io.File;
+import java.util.zip.Inflater;
 
 import ch.cern.cvmfs.R;
+import ch.cern.cvmfs.dialogs.AddRepositoryDialog;
 import ch.cern.cvmfs.listeners.RepositoryStatusListener;
 import ch.cern.cvmfs.model.RepositoryDescription;
 import ch.cern.cvmfs.model.RepositoryManager;
@@ -179,10 +182,7 @@ public class MainFragment extends CVMFSFragment
     }
 
     private void loadRepositoryView(RepositoryDescription chosen) {
-        // find the drawer fragment first
-        RepositoryStatusListener rsl = (RepositoryStatusListener) getCurrentFragment(R.id.loggedin_main_right_frame);
-        rsl.repositoryChanged(chosen);
-        new LoadNewRepository(chosen.getUrl()).execute();
+        new LoadNewRepository(chosen).execute();
     }
 
     private void showRepositoryNotLoadedMessage() {
@@ -211,7 +211,7 @@ public class MainFragment extends CVMFSFragment
 
     @Override
     public void drawerAddRepositorySelected() {
-
+		new AddRepositoryDialog(getActivity()).show();
     }
 
     @Override
@@ -329,10 +329,10 @@ public class MainFragment extends CVMFSFragment
 
     private class LoadNewRepository extends AsyncTask<Void, Void, Void> {
 
-        String url;
+	    private RepositoryDescription chosen;
 
-        public LoadNewRepository(String url) {
-            this.url = url;
+        public LoadNewRepository(RepositoryDescription chosen) {
+	        this.chosen = chosen;
         }
 
         @Override
@@ -347,7 +347,8 @@ public class MainFragment extends CVMFSFragment
         protected Void doInBackground(Void... params) {
             ContextWrapper cw = new ContextWrapper(getActivity());
             File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
-            RepositoryManager.getInstance().setRepositoryInstance(url, mainStorageDirectory.getAbsolutePath());
+            RepositoryManager.getInstance().setRepositoryInstance(chosen.getUrl(),
+		            mainStorageDirectory.getAbsolutePath());
             return null;
         }
 
@@ -358,6 +359,10 @@ public class MainFragment extends CVMFSFragment
                 Toast.makeText(getActivity(), R.string.toast_repository_not_loadable, Toast.LENGTH_SHORT).show();
                 return;
             }
+	        // find the drawer fragment first
+	        RepositoryStatusListener rsl = (RepositoryStatusListener) getCurrentFragment(R.id.loggedin_main_right_frame);
+	        rsl.repositoryChanged(chosen);
+
             menuTitleTextView.setVisibility(View.VISIBLE);
             lastRevision = RepositoryManager.getInstance().getRepositoryInstance().getManifest().getRevision();
             lastVisitedPath = "";
