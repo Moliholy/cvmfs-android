@@ -39,6 +39,6 @@ public class RepositoryDescription {
 
     @Override
     public String toString() {
-        return name + "(" + fqrn + ")";
+        return name + " (" + fqrn + ")";
     }
 }
