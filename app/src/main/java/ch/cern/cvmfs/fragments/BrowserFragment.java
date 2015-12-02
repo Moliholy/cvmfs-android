@@ -18,6 +18,8 @@ import com.molina.cvmfs.directoryentry.DirectoryEntry;
 import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.revision.Revision;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +73,7 @@ public class BrowserFragment extends CVMFSFragment {
 		int pos = path.lastIndexOf("/");
 		if (pos >= 0) {
 			String parentPath = path.substring(0, pos);
-			mCallback.directorySelected(parentPath, revision);
+			mCallback.parentSelected(parentPath, revision);
 			return true;
 		}
 		mCallback.browserBack();
@@ -115,7 +117,9 @@ public class BrowserFragment extends CVMFSFragment {
 		void fileSelected(String absolutePath);
 
 		void browserBack();
-	}
+
+        void parentSelected(String parentPath, int revision);
+    }
 
 	private class FSAdapter extends BaseAdapter {
 
@@ -157,8 +161,12 @@ public class BrowserFragment extends CVMFSFragment {
 			final DirectoryEntry model = objects.get(position);
 
 			TextView itemName = (TextView) finalView.findViewById(R.id.item_name_textview);
-			itemName.setText(model.getName());
-			ImageView itemImage = (ImageView) finalView.findViewById(R.id.item_imageview);
+            try {
+                itemName.setText(new String(model.getName().getBytes("US-ASCII")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            ImageView itemImage = (ImageView) finalView.findViewById(R.id.item_imageview);
 			if (model.isDirectory()) {
 				itemImage.setImageResource(R.drawable.ic_folder_open_black_24dp);
 				if (model.isNestedCatalogMountpoint()) {
