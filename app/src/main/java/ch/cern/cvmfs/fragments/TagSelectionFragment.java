@@ -112,6 +112,21 @@ public class TagSelectionFragment extends CVMFSFragment {
         mCallback.tagSelected(element);
     }
 
+    private void filterTags(long timestamp) {
+        int limit = 0;
+        for (int i = 0; i < tags.size(); i++) {
+            if (timestamp > tags.get(i).getTimestamp()) {
+                limit = Math.min(i + 1, tags.size());
+                break;
+            }
+        }
+        List<RevisionTag> filteredList = new ArrayList<>(tags.subList(0, limit));
+        Collections.reverse(filteredList);
+        TagAdapter adapter = (TagAdapter) tagListView.getAdapter();
+        adapter.setTagList(filteredList);
+        adapter.notifyDataSetChanged();
+    }
+
     public interface TagSelectionListener {
         void tagSelectionBack();
 
@@ -175,21 +190,6 @@ public class TagSelectionFragment extends CVMFSFragment {
             });
             return finalView;
         }
-    }
-
-    private void filterTags(long timestamp) {
-        int limit = 0;
-        for (int i = 0; i < tags.size(); i++) {
-            if (timestamp > tags.get(i).getTimestamp()) {
-                limit = Math.min(i + 1, tags.size());
-                break;
-            }
-        }
-        List<RevisionTag> filteredList = new ArrayList<>(tags.subList(0, limit));
-        Collections.reverse(filteredList);
-        TagAdapter adapter = (TagAdapter) tagListView.getAdapter();
-        adapter.setTagList(filteredList);
-        adapter.notifyDataSetChanged();
     }
 
     private class TagLoader extends AsyncTask<Void, Void, List<RevisionTag>> {

@@ -16,30 +16,30 @@ import ch.cern.cvmfs.model.RepositoryDescription;
 
 public class DrawerFragment extends CVMFSFragment implements RepositoryStatusListener {
 
-	private View mView;
-	private LinearLayout rootFolderLayout;
-	private LinearLayout addRepositoryLayout;
-	private LinearLayout tagsLayout;
+    private View mView;
+    private LinearLayout rootFolderLayout;
+    private LinearLayout addRepositoryLayout;
+    private LinearLayout tagsLayout;
     private LinearLayout exitLayout;
-	private DrawerListener mCallback;
-	private TextView drawerTopTextview;
+    private DrawerListener mCallback;
+    private TextView drawerTopTextview;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		return mView = inflater.inflate(R.layout.fragment_drawer, container, false);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return mView = inflater.inflate(R.layout.fragment_drawer, container, false);
+    }
 
-	@Override
-	public void onAttach(Activity activity) {
-		try {
-			mCallback = (DrawerListener) getParentFragment();
-		} catch (ClassCastException e) {
-			throw new RuntimeException(getParentFragment() + " must implement " +
-					DrawerListener.class.getName());
-		}
-		super.onAttach(activity);
-	}
+    @Override
+    public void onAttach(Activity activity) {
+        try {
+            mCallback = (DrawerListener) getParentFragment();
+        } catch (ClassCastException e) {
+            throw new RuntimeException(getParentFragment() + " must implement " +
+                    DrawerListener.class.getName());
+        }
+        super.onAttach(activity);
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -58,28 +58,28 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
     }
 
     protected void onPrepareInterface() {
-		rootFolderLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_root_layout);
-		rootFolderLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mCallback.drawerHomeSelected();
-			}
-		});
-		addRepositoryLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_add_repository);
-		addRepositoryLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mCallback.drawerAddRepositorySelected();
-			}
-		});
+        rootFolderLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_root_layout);
+        rootFolderLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.drawerHomeSelected();
+            }
+        });
+        addRepositoryLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_add_repository);
+        addRepositoryLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.drawerAddRepositorySelected();
+            }
+        });
         drawerTopTextview = (TextView) mView.findViewById(R.id.drawer_fqrn_textview);
-		tagsLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_list_tags);
-		tagsLayout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				mCallback.drawerTagsSelected();
-			}
-		});
+        tagsLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_list_tags);
+        tagsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCallback.drawerTagsSelected();
+            }
+        });
         exitLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_exit_layout);
         exitLayout.setOnClickListener(new View.OnClickListener() {
 
@@ -89,21 +89,21 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
                 drawerTopTextview.setText("");
             }
         });
-	}
+    }
 
-	@Override
-	public void repositoryChanged(RepositoryDescription repo) {
+    @Override
+    public void repositoryChanged(RepositoryDescription repo) {
         Log.d(DrawerFragment.class.getName(), "Changing to FQRN to " + repo.getFqrn());
         drawerTopTextview.setText(repo.getFqrn());
-	}
+    }
 
-	public interface DrawerListener {
-		void drawerHomeSelected();
+    public interface DrawerListener {
+        void drawerHomeSelected();
 
-		void drawerAddRepositorySelected();
+        void drawerAddRepositorySelected();
 
-		void drawerTagsSelected();
+        void drawerTagsSelected();
 
         void drawerExitSelected();
-	}
+    }
 }

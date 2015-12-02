@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,12 +16,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
         <ListView
             android:id="@+id/tag_selection_listview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 
@@ -34,6 +34,6 @@
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_calendar_disabled" />
+        android:src="@drawable/ic_calendar_disabled"/>
 
 </RelativeLayout>

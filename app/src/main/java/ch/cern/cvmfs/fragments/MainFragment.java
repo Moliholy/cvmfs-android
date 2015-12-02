@@ -36,6 +36,7 @@ public class MainFragment extends CVMFSFragment
         RepositorySelectionFragment.RepositorySelectionListener,
         BrowserFragment.BrowserFragmentListener, TagSelectionFragment.TagSelectionListener {
 
+    private static final String FRAGMENT_STACK_NAME = "main_fragment_stack";
     private Toolbar toolbar;
     private View mView;
     private TextView menuTitleTextView;
@@ -47,12 +48,6 @@ public class MainFragment extends CVMFSFragment
     private ProgressDialog progressDialog;
     private String lastVisitedPath;
     private int lastRevision;
-
-    private static final String FRAGMENT_STACK_NAME = "main_fragment_stack";
-
-    protected enum PathNavigation {
-        PARENT, CHILD, HOME
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -277,6 +272,9 @@ public class MainFragment extends CVMFSFragment
         replaceBrowserPath(PathNavigation.HOME);
     }
 
+    protected enum PathNavigation {
+        PARENT, CHILD, HOME
+    }
 
     private class DownloadFile extends AsyncTask<String, Void, File> {
 

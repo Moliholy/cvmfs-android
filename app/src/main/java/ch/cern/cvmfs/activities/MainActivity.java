@@ -10,44 +10,43 @@ import java.io.File;
 import ch.cern.cvmfs.R;
 import ch.cern.cvmfs.fragments.CVMFSFragment;
 import ch.cern.cvmfs.fragments.MainFragment;
-import ch.cern.cvmfs.model.RepositoryManager;
 
 public class MainActivity extends ActionBarActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		ContextWrapper cw = new ContextWrapper(this);
-		File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
-		if (!mainStorageDirectory.exists()) {
-			boolean result = mainStorageDirectory.mkdirs();
-			if (!result) {
-				Log.e("FileStorage", "Couldn't create the directory \'" +
-						mainStorageDirectory.getAbsolutePath() + "\'");
-			}
-		}
-		setContentView(R.layout.activity_main);
-		if (savedInstanceState == null) {
-			loadMainFragment();
-		}
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ContextWrapper cw = new ContextWrapper(this);
+        File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
+        if (!mainStorageDirectory.exists()) {
+            boolean result = mainStorageDirectory.mkdirs();
+            if (!result) {
+                Log.e("FileStorage", "Couldn't create the directory \'" +
+                        mainStorageDirectory.getAbsolutePath() + "\'");
+            }
+        }
+        setContentView(R.layout.activity_main);
+        if (savedInstanceState == null) {
+            loadMainFragment();
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		CVMFSFragment mainFragment = getCurrentFragment(R.id.container);
-		if (mainFragment != null && mainFragment.onBackPressed()) {
-			return;
-		}
-		super.onBackPressed();
-	}
+    @Override
+    public void onBackPressed() {
+        CVMFSFragment mainFragment = getCurrentFragment(R.id.container);
+        if (mainFragment != null && mainFragment.onBackPressed()) {
+            return;
+        }
+        super.onBackPressed();
+    }
 
-	public void loadMainFragment() {
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.container, new MainFragment())
-				.commit();
-	}
+    public void loadMainFragment() {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, new MainFragment())
+                .commit();
+    }
 
-	protected CVMFSFragment getCurrentFragment(int idContainer) {
-		return (CVMFSFragment) getSupportFragmentManager().findFragmentById(idContainer);
-	}
+    protected CVMFSFragment getCurrentFragment(int idContainer) {
+        return (CVMFSFragment) getSupportFragmentManager().findFragmentById(idContainer);
+    }
 }

@@ -18,25 +18,25 @@ import ch.cern.cvmfs.model.RepositoryManager;
 
 public class RepositorySelectionFragment extends CVMFSFragment {
 
-	private View mView;
-	private Spinner repositorySpinner;
-	private RepositoryDescription[] repositoryDescriptions;
-	private RepositoryDescription selectedRepository;
-	private Button enterButton;
-	private RepositorySelectionListener mCallback;
+    private View mView;
+    private Spinner repositorySpinner;
+    private RepositoryDescription[] repositoryDescriptions;
+    private RepositoryDescription selectedRepository;
+    private Button enterButton;
+    private RepositorySelectionListener mCallback;
     private int chosenPosition;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		return mView = inflater.inflate(R.layout.fragment_repository_selection, container, false);
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return mView = inflater.inflate(R.layout.fragment_repository_selection, container, false);
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         chosenPosition = retrieveChosenPosition();
         super.onViewCreated(view, savedInstanceState);
-	}
+    }
 
     @Override
     public void onDestroy() {
@@ -54,51 +54,51 @@ public class RepositorySelectionFragment extends CVMFSFragment {
     }
 
     @Override
-	public void onAttach(Activity activity) {
-		try {
-			mCallback = (RepositorySelectionListener) getParentFragment();
-		} catch (ClassCastException e) {
-			throw new RuntimeException(getParentFragment() + " must implement " +
-					RepositorySelectionListener.class.getName());
-		}
-		super.onAttach(activity);
-	}
+    public void onAttach(Activity activity) {
+        try {
+            mCallback = (RepositorySelectionListener) getParentFragment();
+        } catch (ClassCastException e) {
+            throw new RuntimeException(getParentFragment() + " must implement " +
+                    RepositorySelectionListener.class.getName());
+        }
+        super.onAttach(activity);
+    }
 
-	@Override
-	protected void onPrepareInterface() {
+    @Override
+    protected void onPrepareInterface() {
         repositoryDescriptions = RepositoryManager.getRepositoryList(getActivity());
-		repositorySpinner = (Spinner) mView.findViewById(R.id.repo_selection_fqrn_spinner);
-		enterButton = (Button) mView.findViewById(R.id.repo_selection_enter_button);
+        repositorySpinner = (Spinner) mView.findViewById(R.id.repo_selection_fqrn_spinner);
+        enterButton = (Button) mView.findViewById(R.id.repo_selection_enter_button);
 
-		ArrayAdapter<RepositoryDescription> arrayAdapter =
-				new ArrayAdapter<>(getActivity(), R.layout.spinner_textview);
-		arrayAdapter.addAll(repositoryDescriptions);
-		arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		repositorySpinner.setAdapter(arrayAdapter);
+        ArrayAdapter<RepositoryDescription> arrayAdapter =
+                new ArrayAdapter<>(getActivity(), R.layout.spinner_textview);
+        arrayAdapter.addAll(repositoryDescriptions);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        repositorySpinner.setAdapter(arrayAdapter);
         repositorySpinner.setSelection(chosenPosition);
-		repositorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				selectedRepository = repositoryDescriptions[position];
-				enterButton.setEnabled(true);
+        repositorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedRepository = repositoryDescriptions[position];
+                enterButton.setEnabled(true);
                 chosenPosition = position;
-			}
+            }
 
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				selectedRepository = null;
-				enterButton.setEnabled(false);
-			}
-		});
-		enterButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mCallback.repositoryChosen(selectedRepository);
-			}
-		});
-	}
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedRepository = null;
+                enterButton.setEnabled(false);
+            }
+        });
+        enterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.repositoryChosen(selectedRepository);
+            }
+        });
+    }
 
-	public interface RepositorySelectionListener {
-		void repositoryChosen(RepositoryDescription chosen);
-	}
+    public interface RepositorySelectionListener {
+        void repositoryChosen(RepositoryDescription chosen);
+    }
 }
