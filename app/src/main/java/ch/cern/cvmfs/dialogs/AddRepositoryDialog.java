@@ -84,12 +84,7 @@ public class AddRepositoryDialog extends AlertDialog {
 			@Override
 			public void onClick(View view) {
 				if (localValidation()) {
-					Toast.makeText(getContext(), getContext().getString(R
-							.string.new_repo_successfully_added), Toast
-							.LENGTH_LONG)
-							.show();
 					new TestRepository(repoURL.getText().toString()).execute();
-					dismiss();
 				} else {
 					Toast.makeText(getContext(), getContext().getString(R
 							.string.new_repo_bad_input), Toast.LENGTH_LONG)
@@ -124,24 +119,26 @@ public class AddRepositoryDialog extends AlertDialog {
 
 		@Override
 		protected void onPostExecute(Repository oldRepo) {
+			repoOKButton.setEnabled(true);
+			setCancelable(true);
+
 			RepositoryManager rm = RepositoryManager.getInstance();
 			Repository newRepo = rm.getRepositoryInstance();
-			String fqrn;
-			if (newRepo != null) {
-				fqrn = newRepo.getFqrn();
-				if (fqrn == null) {
-					Toast.makeText(getContext(), getContext().getString(R
-							.string.new_repo_not_reachable), Toast.LENGTH_LONG)
-							.show();
-					repoOKButton.setEnabled(true);
-					setCancelable(true);
-				} else {
-					addNewRepository(fqrn);
-					dismiss();
-				}
+			if (newRepo != null && newRepo.getFqrn() != null) {
+				Toast.makeText(getContext(), getContext().getString
+								(R.string.new_repo_successfully_added),
+						Toast.LENGTH_LONG)
+						.show();
+				addNewRepository(newRepo.getFqrn());
+				dismiss();
+			} else {
+				Toast.makeText(getContext(), getContext().getString(R
+						.string.new_repo_not_reachable), Toast.LENGTH_LONG)
+						.show();
 			}
 			rm.setRepositoryInstance(oldRepo);
 		}
+
 	}
 
 }
