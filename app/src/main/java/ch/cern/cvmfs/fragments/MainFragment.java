@@ -1,6 +1,5 @@
 package ch.cern.cvmfs.fragments;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContextWrapper;
@@ -25,7 +24,6 @@ import com.molina.cvmfs.repository.Repository;
 import com.molina.cvmfs.revision.Revision;
 
 import java.io.File;
-import java.util.zip.Inflater;
 
 import ch.cern.cvmfs.R;
 import ch.cern.cvmfs.dialogs.AddRepositoryDialog;
@@ -76,7 +74,7 @@ public class MainFragment extends CVMFSFragment
         } else if (lastRevision > 0) {
             menuLogoImageView.setVisibility(View.GONE);
             menuTitleTextView.setVisibility(View.VISIBLE);
-            menuTitleTextView.setText(Integer.toString(lastRevision));
+			setTopText();
         }
     }
 
@@ -107,10 +105,10 @@ public class MainFragment extends CVMFSFragment
         menuTitleTextView = (TextView) mView.findViewById(R.id.menu_title_textview);
         menuLogoImageView = (ImageView) mView.findViewById(R.id.menu_logo_imageview);
         menuBackImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
+	        @Override
+	        public void onClick(View v) {
+		        onBackPressed();
+	        }
         });
     }
 
@@ -160,9 +158,8 @@ public class MainFragment extends CVMFSFragment
 
     private void replaceBrowserPath(PathNavigation navigation) {
         menuLogoImageView.setVisibility(View.GONE);
-        menuTitleTextView.setText(R.string.revision_latest);
         if (lastRevision > 0)
-            menuTitleTextView.setText(Integer.toString(lastRevision));
+            setTopText();
 
         switch (navigation) {
             case CHILD:
@@ -173,7 +170,6 @@ public class MainFragment extends CVMFSFragment
                 removeFragment(R.id.main_container_frame);
                 break;
             case HOME:
-                //removeFragments(FRAGMENT_STACK_NAME);
                 CVMFSFragment homeFragment = createNewBrowserFragment();
                 replaceFragment(homeFragment, R.id.main_container_frame, FRAGMENT_STACK_NAME);
                 break;
@@ -204,10 +200,15 @@ public class MainFragment extends CVMFSFragment
         }
         drawerLayout.closeDrawer(mRightDrawerView);
         menuTitleTextView.setVisibility(View.VISIBLE);
-        menuTitleTextView.setText("/");
+        setTopText();
         lastVisitedPath = "";
         replaceBrowserPath(PathNavigation.HOME);
     }
+
+	private void setTopText() {
+		menuTitleTextView.setText(getText(R.string._revision) + " " +
+				Integer.toString(lastRevision));
+	}
 
     @Override
     public void drawerAddRepositorySelected() {
