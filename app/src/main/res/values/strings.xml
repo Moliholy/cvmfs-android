@@ -31,4 +31,5 @@
     <string name="new_repo_bad_input">Error processing the fields. Please make sure everything is correct</string>
     <string name="new_repo_successfully_added">The new repository has been successfully added</string>
     <string name="_revision">Revision</string>
+    <string name="new_repo_not_reachable">The repository could not be reached</string>
 </resources>

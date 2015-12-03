@@ -3,7 +3,7 @@ package ch.cern.cvmfs.dialogs;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,10 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.molina.cvmfs.repository.Repository;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import ch.cern.cvmfs.R;
+import ch.cern.cvmfs.activities.MainActivity;
 import ch.cern.cvmfs.model.RepositoryDescription;
 import ch.cern.cvmfs.model.RepositoryManager;
 
@@ -22,12 +25,13 @@ import ch.cern.cvmfs.model.RepositoryManager;
 public class AddRepositoryDialog extends AlertDialog {
 
 	private EditText repoName;
-	private EditText repoFQRN;
 	private EditText repoURL;
 	private Button repoOKButton;
+	private MainActivity mActivity;
 
-	public AddRepositoryDialog(Context context) {
-		super(context);
+	public AddRepositoryDialog(Activity activity) {
+		super(activity);
+		mActivity = (MainActivity) activity;
 	}
 
 	protected AddRepositoryDialog(Context context, int theme) {
@@ -53,9 +57,8 @@ public class AddRepositoryDialog extends AlertDialog {
 		return fieldsCorrect && urlCorrect;
 	}
 
-	private void addNewRepository() {
+	private void addNewRepository(String fqrn) {
 		String name = repoName.getText().toString();
-		String fqrn = repoFQRN.getText().toString();
 		String url = repoURL.getText().toString();
 		RepositoryManager.saveNewRepository(getContext(),
 				new RepositoryDescription(name, fqrn, url));
@@ -66,7 +69,6 @@ public class AddRepositoryDialog extends AlertDialog {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.dialog_add_repository);
 		repoName = (EditText) findViewById(R.id.dialog_new_repo_name);
-		repoFQRN = (EditText) findViewById(R.id.dialog_new_repo_fqrn);
 		repoURL = (EditText) findViewById(R.id.dialog_new_repo_url);
 		repoOKButton = (Button) findViewById(R.id.dialog_new_repo_ok_button);
 
@@ -82,11 +84,11 @@ public class AddRepositoryDialog extends AlertDialog {
 			@Override
 			public void onClick(View view) {
 				if (localValidation()) {
-					addNewRepository();
 					Toast.makeText(getContext(), getContext().getString(R
 							.string.new_repo_successfully_added), Toast
 							.LENGTH_LONG)
 							.show();
+					new TestRepository(repoURL.getText().toString()).execute();
 					dismiss();
 				} else {
 					Toast.makeText(getContext(), getContext().getString(R
@@ -96,4 +98,50 @@ public class AddRepositoryDialog extends AlertDialog {
 			}
 		});
 	}
+
+	private class TestRepository extends AsyncTask<Void, Void, Repository> {
+
+		private String url;
+
+		public TestRepository(String url) {
+			this.url = url;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			repoOKButton.setEnabled(false);
+			setCancelable(false);
+		}
+
+		@Override
+		protected Repository doInBackground(Void... params) {
+			String cachePath = mActivity.getCvmfsCachePath();
+			RepositoryManager rm = RepositoryManager.getInstance();
+			Repository current = rm.getRepositoryInstance();
+			rm.setRepositoryInstanceAsync(url, cachePath);
+			return current;
+		}
+
+		@Override
+		protected void onPostExecute(Repository oldRepo) {
+			RepositoryManager rm = RepositoryManager.getInstance();
+			Repository newRepo = rm.getRepositoryInstance();
+			String fqrn;
+			if (newRepo != null) {
+				fqrn = newRepo.getFqrn();
+				if (fqrn == null) {
+					Toast.makeText(getContext(), getContext().getString(R
+							.string.new_repo_not_reachable), Toast.LENGTH_LONG)
+							.show();
+					repoOKButton.setEnabled(true);
+					setCancelable(true);
+				} else {
+					addNewRepository(fqrn);
+					dismiss();
+				}
+			}
+			rm.setRepositoryInstance(oldRepo);
+		}
+	}
+
 }

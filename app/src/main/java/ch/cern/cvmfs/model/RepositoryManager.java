@@ -109,7 +109,7 @@ public class RepositoryManager extends Thread {
         currentRepository = null;
     }
 
-    public Repository setRepositoryInstance(final String url, final String cacheDirectory) {
+    public Repository setRepositoryInstanceAsync(final String url, final String cacheDirectory) {
         tasks.clear();
         addTask(new Runnable() {
             @Override
@@ -123,6 +123,22 @@ public class RepositoryManager extends Thread {
         });
         return currentRepository;
     }
+
+	public Repository setRepositoryInstance(final String url, final String cacheDirectory) {
+		tasks.clear();
+		try {
+			currentRepository = new Repository(url, cacheDirectory);
+		} catch (RepositoryNotFoundException | FailedToLoadSourceException | IOException | CacheDirectoryNotFound | RootFileException e) {
+			e.printStackTrace();
+			currentRepository = null;
+		}
+		return currentRepository;
+	}
+
+	public Repository setRepositoryInstance(Repository repository) {
+		tasks.clear();
+		return currentRepository = repository;
+	}
 
     public synchronized Repository getRepositoryInstance() {
         return currentRepository;

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import ch.cern.cvmfs.activities.MainActivity;
+
 
 public abstract class CVMFSFragment extends Fragment {
 
@@ -43,6 +45,10 @@ public abstract class CVMFSFragment extends Fragment {
         getChildFragmentManager().popBackStack(name, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         getActivity().overridePendingTransition(0, 0);
     }
+
+	public String getCvmfsCachePath() {
+		return ((MainActivity) getActivity()).getCvmfsCachePath();
+	}
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

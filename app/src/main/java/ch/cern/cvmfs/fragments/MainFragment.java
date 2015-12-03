@@ -2,7 +2,6 @@ package ch.cern.cvmfs.fragments;
 
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -346,10 +345,8 @@ public class MainFragment extends CVMFSFragment
 
         @Override
         protected Void doInBackground(Void... params) {
-            ContextWrapper cw = new ContextWrapper(getActivity());
-            File mainStorageDirectory = new File(cw.getFilesDir() + File.separator + "CernVM_FS");
-            RepositoryManager.getInstance().setRepositoryInstance(chosen.getUrl(),
-		            mainStorageDirectory.getAbsolutePath());
+            RepositoryManager.getInstance().setRepositoryInstanceAsync(
+		            chosen.getUrl(), getCvmfsCachePath());
             return null;
         }
 

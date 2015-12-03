@@ -31,6 +31,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	public String getCvmfsCachePath() {
+		ContextWrapper cw = new ContextWrapper(this);
+		return new File(cw.getFilesDir() + File
+				.separator + "CernVM_FS").getAbsolutePath();
+	}
+
     @Override
     public void onBackPressed() {
         CVMFSFragment mainFragment = getCurrentFragment(R.id.container);
