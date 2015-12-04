@@ -2,6 +2,7 @@ package ch.cern.cvmfs.fragments;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.cern.cvmfs.R;
+import ch.cern.cvmfs.dialogs.ViewDirentDialog;
 import ch.cern.cvmfs.model.RepositoryManager;
 
 
@@ -93,6 +95,12 @@ public class BrowserFragment extends CVMFSFragment {
 		}
 	}
 
+
+	private void getInformation(int position) {
+		DirectoryEntry dirent = entries.get(position);
+		new ViewDirentDialog(getActivity(), dirent, revision, path).show();
+	}
+
 	public interface BrowserFragmentListener {
 		void directorySelected(String absolutePath, int revision);
 
@@ -148,18 +156,32 @@ public class BrowserFragment extends CVMFSFragment {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			ImageView itemImage = (ImageView) finalView.findViewById(R.id.item_imageview);
+			ImageView moreImage = (ImageView) finalView
+					.findViewById(R.id.item_more_imageview);
+			ImageView itemImage = (ImageView) finalView
+					.findViewById(R.id.item_icon_imageview);
 			if (model.isDirectory()) {
 				if (model.isNestedCatalogMountpoint()) {
 					itemImage.setImageResource(R.drawable.ic_folder_catalog);
 				} else {
 					itemImage.setImageResource(R.drawable.ic_folder_normal);
+					moreImage.setVisibility(View.GONE);
 				}
 			} else {
 				itemImage.setImageResource(R.drawable.ic_file);
 			}
 
+			if (model.isSymplink()) {
+				moreImage.setVisibility(View.VISIBLE);
+			}
+
 			final int accessedPosition = position;
+			moreImage.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					getInformation(accessedPosition);
+				}
+			});
 			finalView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {

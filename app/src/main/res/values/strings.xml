@@ -29,4 +29,12 @@
     <string name="new_repo_successfully_added">The new repository has been successfully added</string>
     <string name="_revision">Revision</string>
     <string name="new_repo_not_reachable">The repository could not be reached</string>
+    <string name="dirent_name">Name</string>
+    <string name="dirent_size">Size</string>
+    <string name="dirent_hash">Hash</string>
+    <string name="_bytes">Bytes</string>
+    <string name="dirent_symlink">Symlink</string>
+    <string name="dirent_modified">Modified</string>
+    <string name="dirent_catalog_entries">Entries</string>
+    <string name="_unknown">Unknown</string>
 </resources>
