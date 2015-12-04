@@ -39,4 +39,5 @@
     <string name="_unknown">Unknown</string>
     <string name="listing_message">Listing the directory...</string>
     <string name="empty_folder_message">This directory is empty</string>
+    <string name="drawer_clean_cache">CLEAN CACHE</string>
 </resources>

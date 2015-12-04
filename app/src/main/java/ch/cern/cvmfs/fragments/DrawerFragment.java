@@ -2,7 +2,10 @@ package ch.cern.cvmfs.fragments;
 
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
     private LinearLayout addRepositoryLayout;
     private LinearLayout tagsLayout;
     private LinearLayout exitLayout;
+	private LinearLayout clearCacheLyout;
     private DrawerListener mCallback;
     private TextView drawerTopTextview;
 
@@ -80,16 +84,33 @@ public class DrawerFragment extends CVMFSFragment implements RepositoryStatusLis
                 mCallback.drawerTagsSelected();
             }
         });
+
+	    clearCacheLyout = (LinearLayout) mView.findViewById(R.id
+			    .drawer_option_clean_cache);
+	    clearCacheLyout.setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+				clearCache();
+		    }
+	    });
         exitLayout = (LinearLayout) mView.findViewById(R.id.drawer_option_exit_layout);
         exitLayout.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                mCallback.drawerExitSelected();
-                drawerTopTextview.setText("");
-            }
+	        @Override
+	        public void onClick(View v) {
+		        mCallback.drawerExitSelected();
+		        drawerTopTextview.setText("");
+	        }
         });
     }
+
+	private void clearCache() {
+		Intent intent = new Intent();
+		intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+		Uri uri = Uri.fromParts("package", "ch.cern.cvmfs", null);
+		intent.setData(uri);
+		startActivity(intent);
+	}
 
     @Override
     public void repositoryChanged(RepositoryDescription repo) {
