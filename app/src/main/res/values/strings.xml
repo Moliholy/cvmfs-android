@@ -37,4 +37,6 @@
     <string name="dirent_modified">Modified</string>
     <string name="dirent_catalog_entries">Entries</string>
     <string name="_unknown">Unknown</string>
+    <string name="listing_message">Listing the directory...</string>
+    <string name="empty_folder_message">This directory is empty</string>
 </resources>

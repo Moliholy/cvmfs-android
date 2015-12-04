@@ -2,16 +2,15 @@ package ch.cern.cvmfs.fragments;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +30,13 @@ import ch.cern.cvmfs.model.RepositoryManager;
 public class BrowserFragment extends CVMFSFragment {
 
 	private View mView;
-	private ProgressBar progressBar;
+	private View progressBar;
 	private ListView mainListView;
 	private String path;
 	private List<DirectoryEntry> entries;
 	private BrowserFragmentListener mCallback;
 	private int revision;
+	private TextView emptyFolderTextView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +78,9 @@ public class BrowserFragment extends CVMFSFragment {
 	@Override
 	protected void onPrepareInterface() {
 		entries = new ArrayList<>();
-		progressBar = (ProgressBar) mView.findViewById(R.id.browser_progressbar);
+		progressBar = mView.findViewById(R.id.browser_progressbar);
+		emptyFolderTextView = (TextView) mView.findViewById(R
+				.id.browser_empty_folder_textview);
 		mainListView = (ListView) mView.findViewById(R.id.browser_main_listview);
 		mainListView.setAdapter(new FSAdapter(entries));
 	}
@@ -195,6 +197,18 @@ public class BrowserFragment extends CVMFSFragment {
 	private class RepositoryOperation extends AsyncTask<Void, Void, Void> {
 
 		@Override
+		protected void onPreExecute() {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (mainListView.getVisibility() == View.GONE) {
+						progressBar.setVisibility(View.VISIBLE);
+					}
+				}
+			}, 350);
+		}
+
+		@Override
 		protected Void doInBackground(Void... params) {
 			final Repository currentRepo = RepositoryManager.getInstance().getRepositoryInstance();
 			RepositoryManager.getInstance().addTask(new Runnable() {
@@ -214,6 +228,9 @@ public class BrowserFragment extends CVMFSFragment {
 			mainListView.setVisibility(View.VISIBLE);
 			((FSAdapter) mainListView.getAdapter()).setObjects(entries);
 			((FSAdapter) mainListView.getAdapter()).notifyDataSetChanged();
+			if (entries == null || entries.isEmpty()) {
+				emptyFolderTextView.setVisibility(View.VISIBLE);
+			}
 		}
 
 	}
